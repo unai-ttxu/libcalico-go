@@ -18,8 +18,8 @@ import (
 	"net"
 
 	etcdclient "github.com/coreos/etcd/client"
-	"github.com/projectcalico/libcalico-go/lib/api"
-	"github.com/projectcalico/libcalico-go/lib/api/unversioned"
+	"github.com/unai-ttxu/libcalico-go/lib/api"
+	"github.com/unai-ttxu/libcalico-go/lib/api/unversioned"
 	"github.com/projectcalico/libcalico-go/lib/client"
 	cnet "github.com/projectcalico/libcalico-go/lib/net"
 	log "github.com/sirupsen/logrus"

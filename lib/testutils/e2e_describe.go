@@ -16,7 +16,7 @@ package testutils
 import (
 	"fmt"
 
-	"github.com/projectcalico/libcalico-go/lib/api"
+	"github.com/unai-ttxu/libcalico-go/lib/api"
 
 	. "github.com/onsi/ginkgo"
 )

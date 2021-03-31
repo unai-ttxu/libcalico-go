@@ -37,7 +37,7 @@ import (
 
 	"os/exec"
 
-	"github.com/projectcalico/libcalico-go/lib/api"
+	"github.com/unai-ttxu/libcalico-go/lib/api"
 	"github.com/projectcalico/libcalico-go/lib/client"
 	cerrors "github.com/projectcalico/libcalico-go/lib/errors"
 	"github.com/projectcalico/libcalico-go/lib/net"

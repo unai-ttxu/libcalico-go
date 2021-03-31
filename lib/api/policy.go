@@ -17,7 +17,7 @@ package api
 import (
 	"fmt"
 
-	"github.com/projectcalico/libcalico-go/lib/api/unversioned"
+	"github.com/unai-ttxu/libcalico-go/lib/api/unversioned"
 )
 
 // Policy contains information about a security Policy resource.  This contains a set of

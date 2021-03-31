@@ -17,7 +17,7 @@ package custom
 import (
 	"encoding/json"
 
-	"github.com/projectcalico/libcalico-go/lib/api"
+	"github.com/unai-ttxu/libcalico-go/lib/api"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )

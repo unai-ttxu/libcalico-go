@@ -17,7 +17,7 @@ package api
 import (
 	"fmt"
 
-	"github.com/projectcalico/libcalico-go/lib/api/unversioned"
+	"github.com/unai-ttxu/libcalico-go/lib/api/unversioned"
 	"github.com/projectcalico/libcalico-go/lib/net"
 	"github.com/projectcalico/libcalico-go/lib/numorstring"
 )

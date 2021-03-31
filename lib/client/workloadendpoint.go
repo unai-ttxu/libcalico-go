@@ -17,8 +17,8 @@ package client
 import (
 	uuid "github.com/satori/go.uuid"
 
-	"github.com/projectcalico/libcalico-go/lib/api"
-	"github.com/projectcalico/libcalico-go/lib/api/unversioned"
+	"github.com/unai-ttxu/libcalico-go/lib/api"
+	"github.com/unai-ttxu/libcalico-go/lib/api/unversioned"
 	"github.com/projectcalico/libcalico-go/lib/backend/model"
 	"github.com/projectcalico/libcalico-go/lib/converter"
 )

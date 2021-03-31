@@ -18,8 +18,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/projectcalico/libcalico-go/lib/api"
-	"github.com/projectcalico/libcalico-go/lib/api/unversioned"
+	"github.com/unai-ttxu/libcalico-go/lib/api"
+	"github.com/unai-ttxu/libcalico-go/lib/api/unversioned"
 	"github.com/projectcalico/libcalico-go/lib/errors"
 	"github.com/projectcalico/libcalico-go/lib/scope"
 )
