@@ -19,10 +19,10 @@ import (
 	. "github.com/onsi/gomega"
 
 	"github.com/unai-ttxu/libcalico-go/lib/api"
-	bapi "github.com/projectcalico/libcalico-go/lib/backend/api"
-	"github.com/projectcalico/libcalico-go/lib/backend/model"
-	"github.com/projectcalico/libcalico-go/lib/net"
-	"github.com/projectcalico/libcalico-go/lib/testutils"
+	bapi "github.com/unai-ttxu/libcalico-go/lib/backend/api"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
+	"github.com/unai-ttxu/libcalico-go/lib/net"
+	"github.com/unai-ttxu/libcalico-go/lib/testutils"
 )
 
 var _ = testutils.E2eDatastoreDescribe("Backend tests", testutils.DatastoreEtcdV2, func(config api.CalicoAPIConfig) {

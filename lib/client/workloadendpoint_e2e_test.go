@@ -23,8 +23,8 @@ import (
 	. "github.com/onsi/gomega"
 
 	"github.com/unai-ttxu/libcalico-go/lib/api"
-	cnet "github.com/projectcalico/libcalico-go/lib/net"
-	"github.com/projectcalico/libcalico-go/lib/testutils"
+	cnet "github.com/unai-ttxu/libcalico-go/lib/net"
+	"github.com/unai-ttxu/libcalico-go/lib/testutils"
 )
 
 var _ = testutils.E2eDatastoreDescribe("WorkloadEndpoint tests", testutils.DatastoreEtcdV2, func(apiConfig api.CalicoAPIConfig) {

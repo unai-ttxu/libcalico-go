@@ -7,7 +7,7 @@ import (
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	cnet "github.com/projectcalico/libcalico-go/lib/net"
+	cnet "github.com/unai-ttxu/libcalico-go/lib/net"
 )
 
 var _ = Describe("Random Block Generator", func() {

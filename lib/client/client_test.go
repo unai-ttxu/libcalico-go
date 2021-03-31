@@ -23,7 +23,7 @@ import (
 	"os"
 
 	"github.com/unai-ttxu/libcalico-go/lib/api"
-	"github.com/projectcalico/libcalico-go/lib/client"
+	"github.com/unai-ttxu/libcalico-go/lib/client"
 )
 
 var _ = Describe("Client config tests", func() {

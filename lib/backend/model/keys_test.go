@@ -15,11 +15,11 @@
 package model_test
 
 import (
-	. "github.com/projectcalico/libcalico-go/lib/backend/model"
+	. "github.com/unai-ttxu/libcalico-go/lib/backend/model"
 
 	. "github.com/onsi/ginkgo/extensions/table"
 	. "github.com/onsi/gomega"
-	"github.com/projectcalico/libcalico-go/lib/net"
+	"github.com/unai-ttxu/libcalico-go/lib/net"
 )
 
 var _ = DescribeTable(

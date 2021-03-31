@@ -18,7 +18,7 @@ import (
 	"fmt"
 
 	"github.com/unai-ttxu/libcalico-go/lib/api/unversioned"
-	"github.com/projectcalico/libcalico-go/lib/net"
+	"github.com/unai-ttxu/libcalico-go/lib/net"
 )
 
 type WorkloadEndpoint struct {

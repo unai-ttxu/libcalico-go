@@ -18,8 +18,8 @@ import (
 	"fmt"
 
 	"github.com/unai-ttxu/libcalico-go/lib/api/unversioned"
-	"github.com/projectcalico/libcalico-go/lib/ipip"
-	"github.com/projectcalico/libcalico-go/lib/net"
+	"github.com/unai-ttxu/libcalico-go/lib/ipip"
+	"github.com/unai-ttxu/libcalico-go/lib/net"
 )
 
 // IPPool contains the details of a Calico IP pool resource.

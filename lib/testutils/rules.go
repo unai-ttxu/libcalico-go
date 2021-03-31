@@ -16,8 +16,8 @@ package testutils
 
 import (
 	"github.com/unai-ttxu/libcalico-go/lib/api"
-	"github.com/projectcalico/libcalico-go/lib/net"
-	"github.com/projectcalico/libcalico-go/lib/numorstring"
+	"github.com/unai-ttxu/libcalico-go/lib/net"
+	"github.com/unai-ttxu/libcalico-go/lib/numorstring"
 )
 
 var ipv4 = 4

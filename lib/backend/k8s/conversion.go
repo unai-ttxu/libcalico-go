@@ -21,15 +21,15 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/projectcalico/libcalico-go/lib/backend/extensions"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/extensions"
 	log "github.com/sirupsen/logrus"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
 	kapiv1 "k8s.io/client-go/pkg/api/v1"
 
-	"github.com/projectcalico/libcalico-go/lib/backend/model"
-	cnet "github.com/projectcalico/libcalico-go/lib/net"
-	"github.com/projectcalico/libcalico-go/lib/numorstring"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
+	cnet "github.com/unai-ttxu/libcalico-go/lib/net"
+	"github.com/unai-ttxu/libcalico-go/lib/numorstring"
 )
 
 var (

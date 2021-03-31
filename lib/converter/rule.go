@@ -20,8 +20,8 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/unai-ttxu/libcalico-go/lib/api"
-	"github.com/projectcalico/libcalico-go/lib/backend/model"
-	"github.com/projectcalico/libcalico-go/lib/net"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
+	"github.com/unai-ttxu/libcalico-go/lib/net"
 )
 
 // RulesAPIToBackend converts an API Rule structure slice to a Backend Rule structure slice.

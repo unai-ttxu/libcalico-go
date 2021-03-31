@@ -17,8 +17,8 @@ package client
 import (
 	"github.com/unai-ttxu/libcalico-go/lib/api"
 	"github.com/unai-ttxu/libcalico-go/lib/api/unversioned"
-	"github.com/projectcalico/libcalico-go/lib/backend/model"
-	"github.com/projectcalico/libcalico-go/lib/converter"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
+	"github.com/unai-ttxu/libcalico-go/lib/converter"
 )
 
 // PolicyInterface has methods to work with Policy resources.

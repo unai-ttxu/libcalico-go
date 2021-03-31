@@ -18,9 +18,9 @@ import (
 	"fmt"
 
 	"github.com/unai-ttxu/libcalico-go/lib/api/unversioned"
-	"github.com/projectcalico/libcalico-go/lib/net"
-	"github.com/projectcalico/libcalico-go/lib/numorstring"
-	"github.com/projectcalico/libcalico-go/lib/scope"
+	"github.com/unai-ttxu/libcalico-go/lib/net"
+	"github.com/unai-ttxu/libcalico-go/lib/numorstring"
+	"github.com/unai-ttxu/libcalico-go/lib/scope"
 )
 
 // BGPPeer contains information about a BGP peer resource that is a peer of a Calico

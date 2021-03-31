@@ -21,8 +21,8 @@ import (
 	"net"
 	"reflect"
 
-	"github.com/projectcalico/libcalico-go/lib/backend/model"
-	cnet "github.com/projectcalico/libcalico-go/lib/net"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
+	cnet "github.com/unai-ttxu/libcalico-go/lib/net"
 	log "github.com/sirupsen/logrus"
 )
 

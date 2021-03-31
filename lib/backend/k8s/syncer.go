@@ -17,13 +17,13 @@ package k8s
 import (
 	"time"
 
-	"github.com/projectcalico/libcalico-go/lib/backend/api"
-	"github.com/projectcalico/libcalico-go/lib/backend/compat"
-	"github.com/projectcalico/libcalico-go/lib/backend/k8s/resources"
-	"github.com/projectcalico/libcalico-go/lib/backend/model"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/api"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/compat"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/k8s/resources"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
 	log "github.com/sirupsen/logrus"
 
-	extensions "github.com/projectcalico/libcalico-go/lib/backend/extensions"
+	extensions "github.com/unai-ttxu/libcalico-go/lib/backend/extensions"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/fields"
 	"k8s.io/apimachinery/pkg/watch"

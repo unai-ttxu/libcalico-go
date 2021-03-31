@@ -15,13 +15,13 @@
 package validator_test
 
 import (
-	"github.com/projectcalico/libcalico-go/lib/validator"
+	"github.com/unai-ttxu/libcalico-go/lib/validator"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/unai-ttxu/libcalico-go/lib/api"
-	"github.com/projectcalico/libcalico-go/lib/net"
-	"github.com/projectcalico/libcalico-go/lib/scope"
+	"github.com/unai-ttxu/libcalico-go/lib/net"
+	"github.com/unai-ttxu/libcalico-go/lib/scope"
 )
 
 var _ = Describe("Test ValidateMetadataIDsAssigned function", func() {

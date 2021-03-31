@@ -17,8 +17,8 @@ package client
 import (
 	"github.com/unai-ttxu/libcalico-go/lib/api"
 	"github.com/unai-ttxu/libcalico-go/lib/api/unversioned"
-	"github.com/projectcalico/libcalico-go/lib/backend/model"
-	"github.com/projectcalico/libcalico-go/lib/net"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
+	"github.com/unai-ttxu/libcalico-go/lib/net"
 )
 
 // HostEndpointInterface has methods to work with host endpoint resources.

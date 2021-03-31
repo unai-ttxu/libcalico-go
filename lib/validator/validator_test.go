@@ -15,15 +15,15 @@
 package validator_test
 
 import (
-	"github.com/projectcalico/libcalico-go/lib/validator"
+	"github.com/unai-ttxu/libcalico-go/lib/validator"
 
 	. "github.com/onsi/ginkgo/extensions/table"
 	. "github.com/onsi/gomega"
 	"github.com/unai-ttxu/libcalico-go/lib/api"
-	"github.com/projectcalico/libcalico-go/lib/backend/model"
-	"github.com/projectcalico/libcalico-go/lib/net"
-	"github.com/projectcalico/libcalico-go/lib/numorstring"
-	"github.com/projectcalico/libcalico-go/lib/scope"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
+	"github.com/unai-ttxu/libcalico-go/lib/net"
+	"github.com/unai-ttxu/libcalico-go/lib/numorstring"
+	"github.com/unai-ttxu/libcalico-go/lib/scope"
 )
 
 func init() {

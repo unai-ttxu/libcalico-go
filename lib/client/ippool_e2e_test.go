@@ -44,10 +44,10 @@ import (
 	. "github.com/onsi/gomega"
 
 	"github.com/unai-ttxu/libcalico-go/lib/api"
-	cerrors "github.com/projectcalico/libcalico-go/lib/errors"
-	"github.com/projectcalico/libcalico-go/lib/ipip"
-	"github.com/projectcalico/libcalico-go/lib/net"
-	"github.com/projectcalico/libcalico-go/lib/testutils"
+	cerrors "github.com/unai-ttxu/libcalico-go/lib/errors"
+	"github.com/unai-ttxu/libcalico-go/lib/ipip"
+	"github.com/unai-ttxu/libcalico-go/lib/net"
+	"github.com/unai-ttxu/libcalico-go/lib/testutils"
 )
 
 var _ = testutils.E2eDatastoreDescribe("IPPool e2e tests", testutils.DatastoreAll, func(apiConfig api.CalicoAPIConfig) {

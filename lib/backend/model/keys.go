@@ -23,7 +23,7 @@ import (
 	net2 "net"
 	"time"
 
-	"github.com/projectcalico/libcalico-go/lib/net"
+	"github.com/unai-ttxu/libcalico-go/lib/net"
 	log "github.com/sirupsen/logrus"
 )
 

@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/projectcalico/libcalico-go/lib/errors"
+	"github.com/unai-ttxu/libcalico-go/lib/errors"
 )
 
 var (

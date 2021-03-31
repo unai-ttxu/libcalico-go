@@ -17,8 +17,8 @@ package resources
 import (
 	"reflect"
 
-	"github.com/projectcalico/libcalico-go/lib/backend/model"
-	"github.com/projectcalico/libcalico-go/lib/errors"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
+	"github.com/unai-ttxu/libcalico-go/lib/errors"
 	log "github.com/sirupsen/logrus"
 
 	kerrors "k8s.io/apimachinery/pkg/api/errors"

@@ -23,10 +23,10 @@ import (
 	. "github.com/onsi/gomega"
 
 	"github.com/unai-ttxu/libcalico-go/lib/api"
-	"github.com/projectcalico/libcalico-go/lib/client"
-	"github.com/projectcalico/libcalico-go/lib/net"
-	"github.com/projectcalico/libcalico-go/lib/numorstring"
-	"github.com/projectcalico/libcalico-go/lib/testutils"
+	"github.com/unai-ttxu/libcalico-go/lib/client"
+	"github.com/unai-ttxu/libcalico-go/lib/net"
+	"github.com/unai-ttxu/libcalico-go/lib/numorstring"
+	"github.com/unai-ttxu/libcalico-go/lib/testutils"
 )
 
 var _ = testutils.E2eDatastoreDescribe("with config option API tests", testutils.DatastoreEtcdV2, func(calicoConfig api.CalicoAPIConfig) {

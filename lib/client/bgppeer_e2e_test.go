@@ -23,11 +23,11 @@ import (
 	. "github.com/onsi/gomega"
 
 	"github.com/unai-ttxu/libcalico-go/lib/api"
-	cerrors "github.com/projectcalico/libcalico-go/lib/errors"
-	"github.com/projectcalico/libcalico-go/lib/net"
-	"github.com/projectcalico/libcalico-go/lib/numorstring"
-	"github.com/projectcalico/libcalico-go/lib/scope"
-	"github.com/projectcalico/libcalico-go/lib/testutils"
+	cerrors "github.com/unai-ttxu/libcalico-go/lib/errors"
+	"github.com/unai-ttxu/libcalico-go/lib/net"
+	"github.com/unai-ttxu/libcalico-go/lib/numorstring"
+	"github.com/unai-ttxu/libcalico-go/lib/scope"
+	"github.com/unai-ttxu/libcalico-go/lib/testutils"
 )
 
 // Perform CRUD operations on Global and Node-specific BGP Peer Resources.

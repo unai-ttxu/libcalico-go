@@ -19,10 +19,10 @@ import (
 	"fmt"
 
 	"github.com/unai-ttxu/libcalico-go/lib/api"
-	bapi "github.com/projectcalico/libcalico-go/lib/backend/api"
-	"github.com/projectcalico/libcalico-go/lib/backend/compat"
-	"github.com/projectcalico/libcalico-go/lib/backend/etcd"
-	"github.com/projectcalico/libcalico-go/lib/backend/k8s"
+	bapi "github.com/unai-ttxu/libcalico-go/lib/backend/api"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/compat"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/etcd"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/k8s"
 	log "github.com/sirupsen/logrus"
 )
 

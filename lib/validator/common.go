@@ -20,8 +20,8 @@ import (
 
 	"github.com/unai-ttxu/libcalico-go/lib/api"
 	"github.com/unai-ttxu/libcalico-go/lib/api/unversioned"
-	"github.com/projectcalico/libcalico-go/lib/errors"
-	"github.com/projectcalico/libcalico-go/lib/scope"
+	"github.com/unai-ttxu/libcalico-go/lib/errors"
+	"github.com/unai-ttxu/libcalico-go/lib/scope"
 )
 
 // ValidateMetadataIDsAssigned is used to validate the Resource Metadata to ensure

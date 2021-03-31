@@ -15,7 +15,7 @@
 package resources
 
 import (
-	"github.com/projectcalico/libcalico-go/lib/backend/model"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
 
 	apiv1 "k8s.io/client-go/pkg/api/v1"
 )

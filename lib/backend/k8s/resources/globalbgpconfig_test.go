@@ -15,9 +15,9 @@
 package resources_test
 
 import (
-	"github.com/projectcalico/libcalico-go/lib/backend/k8s/custom"
-	"github.com/projectcalico/libcalico-go/lib/backend/k8s/resources"
-	"github.com/projectcalico/libcalico-go/lib/backend/model"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/k8s/custom"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/k8s/resources"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 

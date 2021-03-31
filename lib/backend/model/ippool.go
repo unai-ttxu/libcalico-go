@@ -21,9 +21,9 @@ import (
 
 	"reflect"
 
-	"github.com/projectcalico/libcalico-go/lib/errors"
-	"github.com/projectcalico/libcalico-go/lib/ipip"
-	"github.com/projectcalico/libcalico-go/lib/net"
+	"github.com/unai-ttxu/libcalico-go/lib/errors"
+	"github.com/unai-ttxu/libcalico-go/lib/ipip"
+	"github.com/unai-ttxu/libcalico-go/lib/net"
 	log "github.com/sirupsen/logrus"
 )
 

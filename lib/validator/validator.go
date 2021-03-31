@@ -21,15 +21,15 @@ import (
 	"strings"
 
 	"github.com/unai-ttxu/libcalico-go/lib/api"
-	"github.com/projectcalico/libcalico-go/lib/errors"
-	calinet "github.com/projectcalico/libcalico-go/lib/net"
-	"github.com/projectcalico/libcalico-go/lib/numorstring"
-	"github.com/projectcalico/libcalico-go/lib/scope"
-	"github.com/projectcalico/libcalico-go/lib/selector"
-	"github.com/projectcalico/libcalico-go/lib/selector/tokenizer"
+	"github.com/unai-ttxu/libcalico-go/lib/errors"
+	calinet "github.com/unai-ttxu/libcalico-go/lib/net"
+	"github.com/unai-ttxu/libcalico-go/lib/numorstring"
+	"github.com/unai-ttxu/libcalico-go/lib/scope"
+	"github.com/unai-ttxu/libcalico-go/lib/selector"
+	"github.com/unai-ttxu/libcalico-go/lib/selector/tokenizer"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/projectcalico/libcalico-go/lib/backend/model"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
 	"gopkg.in/go-playground/validator.v8"
 )
 

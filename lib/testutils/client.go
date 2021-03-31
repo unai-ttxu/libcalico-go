@@ -20,8 +20,8 @@ import (
 	etcdclient "github.com/coreos/etcd/client"
 	"github.com/unai-ttxu/libcalico-go/lib/api"
 	"github.com/unai-ttxu/libcalico-go/lib/api/unversioned"
-	"github.com/projectcalico/libcalico-go/lib/client"
-	cnet "github.com/projectcalico/libcalico-go/lib/net"
+	"github.com/unai-ttxu/libcalico-go/lib/client"
+	cnet "github.com/unai-ttxu/libcalico-go/lib/net"
 	log "github.com/sirupsen/logrus"
 
 	"errors"
@@ -29,7 +29,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/projectcalico/libcalico-go/lib/backend/model"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
 	"golang.org/x/net/context"
 )
 

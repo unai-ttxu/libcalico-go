@@ -42,7 +42,7 @@ import (
 	. "github.com/onsi/gomega"
 
 	"github.com/unai-ttxu/libcalico-go/lib/api"
-	"github.com/projectcalico/libcalico-go/lib/testutils"
+	"github.com/unai-ttxu/libcalico-go/lib/testutils"
 )
 
 var order1 = 99.999

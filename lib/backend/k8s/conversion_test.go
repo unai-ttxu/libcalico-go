@@ -18,10 +18,10 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	"github.com/projectcalico/libcalico-go/lib/backend/model"
-	"github.com/projectcalico/libcalico-go/lib/numorstring"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
+	"github.com/unai-ttxu/libcalico-go/lib/numorstring"
 
-	extensions "github.com/projectcalico/libcalico-go/lib/backend/extensions"
+	extensions "github.com/unai-ttxu/libcalico-go/lib/backend/extensions"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
 	k8sapi "k8s.io/client-go/pkg/api/v1"

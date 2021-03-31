@@ -82,16 +82,16 @@ import (
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/projectcalico/libcalico-go/lib/backend"
-	"github.com/projectcalico/libcalico-go/lib/backend/model"
+	"github.com/unai-ttxu/libcalico-go/lib/backend"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
 
 	. "github.com/onsi/ginkgo/extensions/table"
 
 	"github.com/unai-ttxu/libcalico-go/lib/api"
-	"github.com/projectcalico/libcalico-go/lib/client"
-	cerrors "github.com/projectcalico/libcalico-go/lib/errors"
-	cnet "github.com/projectcalico/libcalico-go/lib/net"
-	"github.com/projectcalico/libcalico-go/lib/testutils"
+	"github.com/unai-ttxu/libcalico-go/lib/client"
+	cerrors "github.com/unai-ttxu/libcalico-go/lib/errors"
+	cnet "github.com/unai-ttxu/libcalico-go/lib/net"
+	"github.com/unai-ttxu/libcalico-go/lib/testutils"
 )
 
 type testArgsClaimAff struct {

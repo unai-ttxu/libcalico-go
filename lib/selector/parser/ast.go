@@ -18,7 +18,7 @@ import (
 	_ "crypto/sha256" // register hash func
 	"strings"
 
-	"github.com/projectcalico/libcalico-go/lib/hash"
+	"github.com/unai-ttxu/libcalico-go/lib/hash"
 )
 
 // Labels defines the interface of labels that can be used by selector
