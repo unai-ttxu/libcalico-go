@@ -17,7 +17,7 @@ package client
 import (
 	api "github.com/unai-ttxu/libcalico-go/lib/apis/v1"
 	"github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
-	model "github.com/unai-ttxu/libcalico-go/lib/backend/modelv1"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
 	"github.com/unai-ttxu/libcalico-go/lib/converter"
 )
 

@@ -24,7 +24,7 @@ import (
 	"github.com/coreos/etcd/client"
 	etcd "github.com/coreos/etcd/client"
 	"github.com/unai-ttxu/libcalico-go/lib/backend/apiv1"
-	model "github.com/unai-ttxu/libcalico-go/lib/backend/modelv1"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
 	"github.com/unai-ttxu/libcalico-go/lib/hwm"
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/net/context"

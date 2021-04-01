@@ -83,7 +83,7 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/unai-ttxu/libcalico-go/lib/backend"
-	model "github.com/unai-ttxu/libcalico-go/lib/backend/modelv1"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
 
 	. "github.com/onsi/ginkgo/extensions/table"
 

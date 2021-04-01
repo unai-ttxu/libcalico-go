@@ -25,7 +25,7 @@ import (
 	"fmt"
 
 	api "github.com/unai-ttxu/libcalico-go/lib/apis/v1"
-	model "github.com/unai-ttxu/libcalico-go/lib/backend/modelv1"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
 	"github.com/unai-ttxu/libcalico-go/lib/errors"
 	cnet "github.com/unai-ttxu/libcalico-go/lib/net"
 	log "github.com/sirupsen/logrus"
