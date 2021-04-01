@@ -29,7 +29,7 @@ import (
 	bapi "github.com/unai-ttxu/libcalico-go/lib/backend/api"
 	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
 	"github.com/unai-ttxu/libcalico-go/lib/errors"
-	"github.com/unai-ttxu/libcalico-go/lib/validator"
+	"github.com/unai-ttxu/libcalico-go/lib/validator/v1"
 	"github.com/satori/go.uuid"
 	log "github.com/sirupsen/logrus"
 )
