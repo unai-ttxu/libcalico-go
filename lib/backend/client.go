@@ -20,6 +20,7 @@ import (
 
 	"github.com/projectcalico/libcalico-go/lib/apiconfig"
 	bapi "github.com/projectcalico/libcalico-go/lib/backend/api"
+	"github.com/projectcalico/libcalico-go/lib/backend/etcd"
 	"github.com/projectcalico/libcalico-go/lib/backend/etcdv3"
 	"github.com/projectcalico/libcalico-go/lib/backend/k8s"
 	log "github.com/sirupsen/logrus"
@@ -29,6 +30,8 @@ import (
 func NewClient(config apiconfig.CalicoAPIConfig) (c bapi.Client, err error) {
 	log.Debugf("Using datastore type '%s'", config.Spec.DatastoreType)
 	switch config.Spec.DatastoreType {
+	case apiconfig.EtcdV2:
+		c, err = etcd.NewEtcdClient(&config.Spec.EtcdConfig)
 	case apiconfig.EtcdV3:
 		c, err = etcdv3.NewEtcdV3Client(&config.Spec.EtcdConfig)
 	case apiconfig.Kubernetes:

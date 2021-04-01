@@ -36,12 +36,12 @@ func LoadClientConfig(filename string) (*CalicoAPIConfig, error) {
 func LoadClientConfigFromBytes(b []byte) (*CalicoAPIConfig, error) {
 	var c CalicoAPIConfig
 
-	// Default the backend type to be etcd v3.  This will be overridden if
+	// Default the backend type to be etcd v2.  This will be overridden if
 	// explicitly specified in the file.
 	log.Debug("Loading config from JSON or YAML data")
 	c = CalicoAPIConfig{
 		Spec: CalicoAPIConfigSpec{
-			DatastoreType: EtcdV3,
+			DatastoreType: EtcdV2,
 		},
 	}
 
