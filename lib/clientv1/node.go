@@ -17,8 +17,8 @@ package client
 import (
 	log "github.com/sirupsen/logrus"
 
-	"github.com/unai-ttxu/libcalico-go/lib/api"
-	"github.com/unai-ttxu/libcalico-go/lib/api/unversioned"
+	api "github.com/unai-ttxu/libcalico-go/lib/apis/v1"
+	unversioned "github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
 	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
 	"github.com/unai-ttxu/libcalico-go/lib/errors"
 	"github.com/unai-ttxu/libcalico-go/lib/net"

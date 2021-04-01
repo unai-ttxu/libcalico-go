@@ -37,8 +37,8 @@ import (
 
 	"os/exec"
 
-	"github.com/unai-ttxu/libcalico-go/lib/api"
-	"github.com/unai-ttxu/libcalico-go/lib/client"
+	api "github.com/unai-ttxu/libcalico-go/lib/apis/v1"
+	client "github.com/unai-ttxu/libcalico-go/lib/apis/v1/clientv1"
 	cerrors "github.com/unai-ttxu/libcalico-go/lib/errors"
 	"github.com/unai-ttxu/libcalico-go/lib/net"
 	"github.com/unai-ttxu/libcalico-go/lib/numorstring"

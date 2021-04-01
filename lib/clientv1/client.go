@@ -23,8 +23,8 @@ import (
 
 	"github.com/kelseyhightower/envconfig"
 	yaml "github.com/projectcalico/go-yaml-wrapper"
-	"github.com/unai-ttxu/libcalico-go/lib/api"
-	"github.com/unai-ttxu/libcalico-go/lib/api/unversioned"
+	api "github.com/unai-ttxu/libcalico-go/lib/apis/v1"
+	unversioned "github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
 	"github.com/unai-ttxu/libcalico-go/lib/backend"
 	bapi "github.com/unai-ttxu/libcalico-go/lib/backend/api"
 	"github.com/unai-ttxu/libcalico-go/lib/backend/model"

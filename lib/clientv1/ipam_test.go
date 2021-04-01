@@ -87,8 +87,8 @@ import (
 
 	. "github.com/onsi/ginkgo/extensions/table"
 
-	"github.com/unai-ttxu/libcalico-go/lib/api"
-	"github.com/unai-ttxu/libcalico-go/lib/client"
+	api "github.com/unai-ttxu/libcalico-go/lib/apis/v1"
+	client "github.com/unai-ttxu/libcalico-go/lib/apis/v1/clientv1"
 	cerrors "github.com/unai-ttxu/libcalico-go/lib/errors"
 	cnet "github.com/unai-ttxu/libcalico-go/lib/net"
 	"github.com/unai-ttxu/libcalico-go/lib/testutils"

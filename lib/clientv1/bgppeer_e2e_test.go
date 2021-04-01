@@ -22,7 +22,7 @@ import (
 	. "github.com/onsi/ginkgo/extensions/table"
 	. "github.com/onsi/gomega"
 
-	"github.com/unai-ttxu/libcalico-go/lib/api"
+	api "github.com/unai-ttxu/libcalico-go/lib/apis/v1"
 	cerrors "github.com/unai-ttxu/libcalico-go/lib/errors"
 	"github.com/unai-ttxu/libcalico-go/lib/net"
 	"github.com/unai-ttxu/libcalico-go/lib/numorstring"

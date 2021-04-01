@@ -22,8 +22,8 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	"github.com/unai-ttxu/libcalico-go/lib/api"
-	"github.com/unai-ttxu/libcalico-go/lib/client"
+	api "github.com/unai-ttxu/libcalico-go/lib/apis/v1"
+	client "github.com/unai-ttxu/libcalico-go/lib/apis/v1/clientv1"
 	"github.com/unai-ttxu/libcalico-go/lib/net"
 	"github.com/unai-ttxu/libcalico-go/lib/numorstring"
 	"github.com/unai-ttxu/libcalico-go/lib/testutils"
