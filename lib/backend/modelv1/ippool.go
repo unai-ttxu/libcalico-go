@@ -22,7 +22,7 @@ import (
 	"reflect"
 
 	"github.com/unai-ttxu/libcalico-go/lib/errors"
-	"github.com/unai-ttxu/libcalico-go/lib/ipip"
+	ipip "github.com/unai-ttxu/libcalico-go/lib/backend/encap"
 	"github.com/unai-ttxu/libcalico-go/lib/net"
 	log "github.com/sirupsen/logrus"
 )
