@@ -20,8 +20,8 @@ import (
 	. "github.com/onsi/ginkgo/extensions/table"
 	. "github.com/onsi/gomega"
 
-	"github.com/unai-ttxu/libcalico-go/lib/api"
-	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
+	api "github.com/unai-ttxu/libcalico-go/lib/apis/v1"
+	model "github.com/unai-ttxu/libcalico-go/lib/backend/modelv1"
 	"github.com/unai-ttxu/libcalico-go/lib/net"
 )
 
