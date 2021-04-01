@@ -51,17 +51,7 @@ func init() {
 	netv6_3 := net.MustParseNetwork("aabb:aabb::ffff/122")
 	netv6_4 := net.MustParseNetwork("aabb:aabb::ffff/10")
 
-	protoTCP := numorstring.ProtocolFromStringV1("tcp")
-	protoUDP := numorstring.ProtocolFromStringV1("udp")
-	protoNumeric := numorstring.ProtocolFromInt(123)
-
-	// badPorts contains a port that should fail validation because it mixes named and numeric
-	// ports.
-	badPorts := []numorstring.Port{{
-		PortName: "foo",
-		MinPort:  1,
-		MaxPort:  123,
-	}}
+	protoTCP := numorstring.ProtocolFromString("tcp")
 
 	// Perform basic validation of different fields and structures to test simple valid/invalid
 	// scenarios.  This does not test precise error strings - but does cover a lot of the validation
@@ -79,10 +69,26 @@ func init() {
 		// Empty rule is valid, it means "allow all".
 		Entry("empty rule (m)", model.Rule{}, true),
 
+		// (Backend model) ICMP.
+		Entry("should accept ICMP 0/any (m)", model.Rule{ICMPType: &V0}, true),
+		Entry("should accept ICMP 0/0 (m)", model.Rule{ICMPType: &V0, ICMPCode: &V0}, true),
+		Entry("should accept ICMP 128/0 (m)", model.Rule{ICMPType: &V128, ICMPCode: &V0}, true),
+		Entry("should accept ICMP 254/255 (m)", model.Rule{ICMPType: &V254, ICMPCode: &V255}, true),
+		Entry("should reject ICMP 255/255 (m)", model.Rule{ICMPType: &V255, ICMPCode: &V255}, false),
+		Entry("should reject ICMP 128/256 (m)", model.Rule{ICMPType: &V128, ICMPCode: &V256}, false),
+		Entry("should accept not ICMP 0/any (m)", model.Rule{NotICMPType: &V0}, true),
+		Entry("should accept not ICMP 0/0 (m)", model.Rule{NotICMPType: &V0, NotICMPCode: &V0}, true),
+		Entry("should accept not ICMP 128/0 (m)", model.Rule{NotICMPType: &V128, NotICMPCode: &V0}, true),
+		Entry("should accept not ICMP 254/255 (m)", model.Rule{NotICMPType: &V254, NotICMPCode: &V255}, true),
+		Entry("should reject not ICMP 255/255 (m)", model.Rule{NotICMPType: &V255, NotICMPCode: &V255}, false),
+		Entry("should reject not ICMP 128/256 (m)", model.Rule{NotICMPType: &V128, NotICMPCode: &V256}, false),
+
 		// (Backend model) Actions.
 		Entry("should accept allow action (m)", model.Rule{Action: "allow"}, true),
 		Entry("should accept deny action (m)", model.Rule{Action: "deny"}, true),
 		Entry("should accept log action (m)", model.Rule{Action: "log"}, true),
+		Entry("should reject unknown action (m)", model.Rule{Action: "unknown"}, false),
+		Entry("should reject unknown action (m)", model.Rule{Action: "allowfoo"}, false),
 
 		// (API) Actions.
 		Entry("should accept allow action", api.Rule{Action: "allow"}, true),
@@ -114,347 +120,6 @@ func init() {
 		Entry("should reject !dst ports with no protocol (m)", model.Rule{
 			NotDstPorts: []numorstring.Port{numorstring.SinglePort(80)},
 		}, false),
-		Entry("should accept src named ports with tcp protocol (m)", model.Rule{
-			Protocol: &protoTCP,
-			SrcPorts: []numorstring.Port{numorstring.NamedPort("foo")},
-		}, true),
-		Entry("should accept dst named ports with tcp protocol (m)", model.Rule{
-			Protocol: &protoTCP,
-			DstPorts: []numorstring.Port{numorstring.NamedPort("foo")},
-		}, true),
-		Entry("should accept !src named ports with tcp protocol (m)", model.Rule{
-			Protocol:    &protoTCP,
-			NotSrcPorts: []numorstring.Port{numorstring.NamedPort("foo")},
-		}, true),
-		Entry("should accept !dst named ports with tcp protocol (m)", model.Rule{
-			Protocol:    &protoTCP,
-			NotDstPorts: []numorstring.Port{numorstring.NamedPort("foo")},
-		}, true),
-		Entry("should reject src named ports with no protocol (m)", model.Rule{
-			SrcPorts: []numorstring.Port{numorstring.NamedPort("foo")},
-		}, false),
-		Entry("should reject dst named ports with no protocol (m)", model.Rule{
-			DstPorts: []numorstring.Port{numorstring.NamedPort("foo")},
-		}, false),
-		Entry("should reject !src named ports with no protocol (m)", model.Rule{
-			NotSrcPorts: []numorstring.Port{numorstring.NamedPort("foo")},
-		}, false),
-		Entry("should reject !dst named ports with no protocol (m)", model.Rule{
-			NotDstPorts: []numorstring.Port{numorstring.NamedPort("foo")},
-		}, false),
-		// Check that we tell the validator to "dive" and validate the port too.
-		Entry("should reject src named ports with min and max (m)", model.Rule{
-			Protocol: &protoTCP,
-			SrcPorts: badPorts,
-		}, false),
-		Entry("should reject !src named ports with min and max (m)", model.Rule{
-			Protocol:    &protoTCP,
-			NotSrcPorts: badPorts,
-		}, false),
-		Entry("should reject dst named ports with min and max (m)", model.Rule{
-			Protocol: &protoTCP,
-			DstPorts: badPorts,
-		}, false),
-		Entry("should reject !dst named ports with min and max (m)", model.Rule{
-			Protocol:    &protoTCP,
-			NotDstPorts: badPorts,
-		}, false),
-		Entry("should accept original source selector (m)", model.Rule{
-			OriginalSrcSelector: "app == 'sandwich'",
-		}, true),
-		Entry("should accept original destination selector (m)", model.Rule{
-			OriginalDstSelector: "app == 'sandwich'",
-		}, true),
-		Entry("should accept original source namespace selector (m)", model.Rule{
-			OriginalSrcNamespaceSelector: "app == 'sandwich'",
-		}, true),
-		Entry("should accept original destination namespace selector (m)", model.Rule{
-			OriginalDstNamespaceSelector: "app == 'sandwich'",
-		}, true),
-		Entry("should accept original not source selector (m)", model.Rule{
-			OriginalNotSrcSelector: "app == 'sandwich'",
-		}, true),
-		Entry("should accept original not destination selector (m)", model.Rule{
-			OriginalNotDstSelector: "app == 'sandwich'",
-		}, true),
-		Entry("should accept original source service account selector (m)", model.Rule{
-			OriginalSrcServiceAccountSelector: "app == 'sandwich'",
-		}, true),
-		Entry("should accept original destination service account selector (m)", model.Rule{
-			OriginalDstServiceAccountSelector: "app == 'sandwich'",
-		}, true),
-		Entry("should accept named source service accounts (m)", model.Rule{
-			SrcSelector:                    "projectcalico.org/serviceaccount in {\"summary\"}",
-			OriginalSrcServiceAccountNames: []string{"summary"},
-		}, true),
-		Entry("should accept named destination service accounts (m)", model.Rule{
-			DstSelector:                    "projectcalico.org/serviceaccount in {\"summary\"}",
-			OriginalDstServiceAccountNames: []string{"summary"},
-		}, true),
-		Entry("should reject original source selector with error (m)", model.Rule{
-			OriginalSrcSelector: "not a selector",
-		}, false),
-		Entry("should reject original destination selector with error (m)", model.Rule{
-			OriginalDstSelector: "not a selector",
-		}, false),
-		Entry("should reject original source namespace selector with error (m)", model.Rule{
-			OriginalSrcNamespaceSelector: "not a selector",
-		}, false),
-		Entry("should reject original destination namespace selector with error (m)", model.Rule{
-			OriginalDstNamespaceSelector: "not a selector",
-		}, false),
-		Entry("should reject original not source selector with error (m)", model.Rule{
-			OriginalNotSrcSelector: "not a selector",
-		}, false),
-		Entry("should reject original not destination selector with error (m)", model.Rule{
-			OriginalNotDstSelector: "not a selector",
-		}, false),
-		Entry("should reject original source service account selector with error (m)", model.Rule{
-			OriginalSrcServiceAccountSelector: "not a selector",
-		}, false),
-		Entry("should reject original destination service account selector with error (m)", model.Rule{
-			OriginalDstServiceAccountSelector: "not a selector",
-		}, false),
-
-		// (Backend model) EndpointPorts.
-		Entry("should accept EndpointPort with tcp protocol (m)", model.EndpointPort{
-			Name:     "a_Jolly-port",
-			Protocol: protoTCP,
-			Port:     1234,
-		}, true),
-		Entry("should accept EndpointPort with udp protocol (m)", model.EndpointPort{
-			Name:     "a_Jolly-port",
-			Protocol: protoUDP,
-			Port:     1234,
-		}, true),
-		Entry("should reject EndpointPort with empty name (m)", model.EndpointPort{
-			Name:     "",
-			Protocol: protoUDP,
-			Port:     1234,
-		}, false),
-		Entry("should reject EndpointPort with no protocol (m)", model.EndpointPort{
-			Name: "a_Jolly-port",
-			Port: 1234,
-		}, false),
-		Entry("should reject EndpointPort with numeric protocol (m)", model.EndpointPort{
-			Name:     "a_Jolly-port",
-			Protocol: protoNumeric,
-			Port:     1234,
-		}, false),
-		Entry("should reject EndpointPort with no port (m)", model.EndpointPort{
-			Name:     "a_Jolly-port",
-			Protocol: protoTCP,
-		}, false),
-
-		// (API model) EndpointPorts.
-		Entry("should accept EndpointPort with tcp protocol", api.EndpointPort{
-			Name:     "a_Jolly-port",
-			Protocol: protoTCP,
-			Port:     1234,
-		}, true),
-		Entry("should accept EndpointPort with udp protocol", api.EndpointPort{
-			Name:     "a_Jolly-port",
-			Protocol: protoUDP,
-			Port:     1234,
-		}, true),
-		Entry("should reject EndpointPort with empty name", api.EndpointPort{
-			Name:     "",
-			Protocol: protoUDP,
-			Port:     1234,
-		}, false),
-		Entry("should reject EndpointPort with no protocol", api.EndpointPort{
-			Name: "a_Jolly-port",
-			Port: 1234,
-		}, false),
-		Entry("should reject EndpointPort with numeric protocol", api.EndpointPort{
-			Name:     "a_Jolly-port",
-			Protocol: protoNumeric,
-			Port:     1234,
-		}, false),
-		Entry("should reject EndpointPort with no port", api.EndpointPort{
-			Name:     "a_Jolly-port",
-			Protocol: protoTCP,
-		}, false),
-
-		// (Backend model) WorkloadEndpoint.
-		Entry("should accept WorkloadEndpoint with a port (m)",
-			model.WorkloadEndpoint{
-				Ports: []model.EndpointPort{
-					{
-						Name:     "a_Jolly-port",
-						Protocol: protoTCP,
-						Port:     1234,
-					},
-				},
-			},
-			true,
-		),
-		Entry("should reject WorkloadEndpoint with an unnamed port (m)",
-			model.WorkloadEndpoint{
-				Ports: []model.EndpointPort{
-					{
-						Protocol: protoTCP,
-						Port:     1234,
-					},
-				},
-			},
-			false,
-		),
-		Entry("should accept WorkloadEndpoint with name-clashing ports (m)",
-			model.WorkloadEndpoint{
-				Ports: []model.EndpointPort{
-					{
-						Name:     "a_Jolly-port",
-						Protocol: protoTCP,
-						Port:     1234,
-					},
-					{
-						Name:     "a_Jolly-port",
-						Protocol: protoUDP,
-						Port:     5456,
-					},
-				},
-			},
-			true,
-		),
-
-		// (API) WorkloadEndpointSpec.
-		Entry("should accept WorkloadEndpointSpec with a port (m)",
-			api.WorkloadEndpointSpec{
-				InterfaceName: "eth0",
-				Ports: []api.EndpointPort{
-					{
-						Name:     "a_Jolly-port",
-						Protocol: protoTCP,
-						Port:     1234,
-					},
-				},
-			},
-			true,
-		),
-		Entry("should reject WorkloadEndpointSpec with an unnamed port (m)",
-			api.WorkloadEndpointSpec{
-				InterfaceName: "eth0",
-				Ports: []api.EndpointPort{
-					{
-						Protocol: protoTCP,
-						Port:     1234,
-					},
-				},
-			},
-			false,
-		),
-		Entry("should accept WorkloadEndpointSpec with name-clashing ports (m)",
-			api.WorkloadEndpointSpec{
-				InterfaceName: "eth0",
-				Ports: []api.EndpointPort{
-					{
-						Name:     "a_Jolly-port",
-						Protocol: protoTCP,
-						Port:     1234,
-					},
-					{
-						Name:     "a_Jolly-port",
-						Protocol: protoUDP,
-						Port:     5456,
-					},
-				},
-			},
-			true,
-		),
-
-		// (Backend model) HostEndpoint.
-		Entry("should accept HostEndpoint with a port (m)",
-			model.HostEndpoint{
-				Ports: []model.EndpointPort{
-					{
-						Name:     "a_Jolly-port",
-						Protocol: protoTCP,
-						Port:     1234,
-					},
-				},
-			},
-			true,
-		),
-		Entry("should reject HostEndpoint with an unnamed port (m)",
-			model.HostEndpoint{
-				Ports: []model.EndpointPort{
-					{
-						Protocol: protoTCP,
-						Port:     1234,
-					},
-				},
-			},
-			false,
-		),
-		Entry("should accept HostEndpoint with name-clashing ports (m)",
-			model.HostEndpoint{
-				Ports: []model.EndpointPort{
-					{
-						Name:     "a_Jolly-port",
-						Protocol: protoTCP,
-						Port:     1234,
-					},
-					{
-						Name:     "a_Jolly-port",
-						Protocol: protoUDP,
-						Port:     5456,
-					},
-				},
-			},
-			true,
-		),
-		Entry("should accept HostEndpoint with Name *",
-			model.HostEndpoint{
-				Name: "*",
-			},
-			true,
-		),
-
-		// (API) HostEndpointSpec.
-		Entry("should accept HostEndpointSpec with a port (m)",
-			api.HostEndpointSpec{
-				InterfaceName: "eth0",
-				Ports: []api.EndpointPort{
-					{
-						Name:     "a_Jolly-port",
-						Protocol: protoTCP,
-						Port:     1234,
-					},
-				},
-			},
-			true,
-		),
-		Entry("should reject HostEndpointSpec with an unnamed port (m)",
-			api.HostEndpointSpec{
-				InterfaceName: "eth0",
-				Ports: []api.EndpointPort{
-					{
-						Protocol: protoTCP,
-						Port:     1234,
-					},
-				},
-			},
-			false,
-		),
-		Entry("should accept HostEndpointSpec with name-clashing ports (m)",
-			api.HostEndpointSpec{
-				InterfaceName: "eth0",
-				Ports: []api.EndpointPort{
-					{
-						Name:     "a_Jolly-port",
-						Protocol: protoTCP,
-						Port:     1234,
-					},
-					{
-						Name:     "a_Jolly-port",
-						Protocol: protoUDP,
-						Port:     5456,
-					},
-				},
-			},
-			true,
-		),
 
 		// (API) IP version.
 		Entry("should accept IP version 4", api.Rule{Action: "allow", IPVersion: &V4}, true),
@@ -508,22 +173,22 @@ func init() {
 		Entry("should reject scope foo", api.BGPPeerMetadata{Scope: scope.Scope("foo")}, false),
 
 		// (API) Protocol
-		Entry("should accept protocol tcp", ProtocolFromStringV1("tcp"), true),
-		Entry("should accept protocol udp", ProtocolFromStringV1("udp"), true),
-		Entry("should accept protocol icmp", ProtocolFromStringV1("icmp"), true),
-		Entry("should accept protocol icmpv6", ProtocolFromStringV1("icmpv6"), true),
-		Entry("should accept protocol sctp", ProtocolFromStringV1("sctp"), true),
-		Entry("should accept protocol udplite", ProtocolFromStringV1("udplite"), true),
+		Entry("should accept protocol tcp", protocolFromString("tcp"), true),
+		Entry("should accept protocol udp", protocolFromString("udp"), true),
+		Entry("should accept protocol icmp", protocolFromString("icmp"), true),
+		Entry("should accept protocol icmpv6", protocolFromString("icmpv6"), true),
+		Entry("should accept protocol sctp", protocolFromString("sctp"), true),
+		Entry("should accept protocol udplite", protocolFromString("udplite"), true),
 		Entry("should accept protocol 1 as int", protocolFromInt(1), true),
 		Entry("should accept protocol 255 as int", protocolFromInt(255), true),
-		Entry("should accept protocol 255 as string", ProtocolFromStringV1("255"), true),
-		Entry("should accept protocol 1 as string", ProtocolFromStringV1("1"), true),
+		Entry("should accept protocol 255 as string", protocolFromString("255"), true),
+		Entry("should accept protocol 1 as string", protocolFromString("1"), true),
 		Entry("should reject protocol 0 as int", protocolFromInt(0), false),
-		Entry("should reject protocol 256 as string", ProtocolFromStringV1("256"), false),
-		Entry("should reject protocol 0 as string", ProtocolFromStringV1("0"), false),
-		Entry("should reject protocol tcpfoo", ProtocolFromStringV1("tcpfoo"), false),
-		Entry("should reject protocol footcp", ProtocolFromStringV1("footcp"), false),
-		Entry("should reject protocol TCP", numorstring.Protocol{StrVal: "TCP", Type: numorstring.NumOrStringString}, false),
+		Entry("should reject protocol 256 as string", protocolFromString("256"), false),
+		Entry("should reject protocol 0 as string", protocolFromString("0"), false),
+		Entry("should reject protocol tcpfoo", protocolFromString("tcpfoo"), false),
+		Entry("should reject protocol footcp", protocolFromString("footcp"), false),
+		Entry("should reject protocol TCP", protocolFromString("TCP"), false),
 
 		// (API) IPNAT
 		Entry("should accept valid IPNAT IPv4",
@@ -680,7 +345,7 @@ func init() {
 		Entry("should accept Rule with protocol sctp and no other config",
 			api.Rule{
 				Action:   "allow",
-				Protocol: ProtocolFromStringV1("sctp"),
+				Protocol: protocolFromString("sctp"),
 			}, true),
 		Entry("should accept Rule with source ports and protocol type 6",
 			api.Rule{
@@ -688,30 +353,6 @@ func init() {
 				Protocol: protocolFromInt(6),
 				Source: api.EntityRule{
 					Ports: []numorstring.Port{numorstring.SinglePort(1)},
-				},
-			}, true),
-		Entry("should accept Rule with source named ports and protocol type 6",
-			api.Rule{
-				Action:   "allow",
-				Protocol: protocolFromInt(6),
-				Source: api.EntityRule{
-					Ports: []numorstring.Port{numorstring.NamedPort("foo")},
-				},
-			}, true),
-		Entry("should accept Rule with source named ports and protocol type tcp",
-			api.Rule{
-				Action:   "allow",
-				Protocol: ProtocolFromStringV1("tcp"),
-				Source: api.EntityRule{
-					Ports: []numorstring.Port{numorstring.NamedPort("foo")},
-				},
-			}, true),
-		Entry("should accept Rule with source named ports and protocol type udp",
-			api.Rule{
-				Action:   "allow",
-				Protocol: ProtocolFromStringV1("udp"),
-				Source: api.EntityRule{
-					Ports: []numorstring.Port{numorstring.NamedPort("foo")},
 				},
 			}, true),
 		Entry("should accept Rule with empty source ports and protocol type 7",
@@ -741,7 +382,7 @@ func init() {
 		Entry("should accept Rule with dest ports and protocol type tcp",
 			api.Rule{
 				Action:   "allow",
-				Protocol: ProtocolFromStringV1("tcp"),
+				Protocol: protocolFromString("tcp"),
 				Destination: api.EntityRule{
 					Ports: []numorstring.Port{numorstring.SinglePort(1)},
 				},
@@ -756,35 +397,15 @@ func init() {
 		Entry("should reject Rule with invalid port (port 0)",
 			api.Rule{
 				Action:   "allow",
-				Protocol: ProtocolFromStringV1("tcp"),
+				Protocol: protocolFromString("tcp"),
 				Destination: api.EntityRule{
 					NotPorts: []numorstring.Port{numorstring.SinglePort(0)},
-				},
-			}, false),
-		Entry("should reject Rule with invalid port (name + number)",
-			api.Rule{
-				Action:   "allow",
-				Protocol: ProtocolFromStringV1("tcp"),
-				Destination: api.EntityRule{
-					NotPorts: []numorstring.Port{{
-						PortName: "foo",
-						MinPort:  123,
-						MaxPort:  456,
-					}},
-				},
-			}, false),
-		Entry("should reject named port Rule with invalid protocol",
-			api.Rule{
-				Action:   "allow",
-				Protocol: ProtocolFromStringV1("unknown"),
-				Destination: api.EntityRule{
-					NotPorts: []numorstring.Port{numorstring.NamedPort("foo")},
 				},
 			}, false),
 		Entry("should accept Rule with empty dest ports and protocol type sctp",
 			api.Rule{
 				Action:   "allow",
-				Protocol: ProtocolFromStringV1("sctp"),
+				Protocol: protocolFromString("sctp"),
 				Destination: api.EntityRule{
 					Ports: []numorstring.Port{},
 				},
@@ -792,7 +413,7 @@ func init() {
 		Entry("should accept Rule with empty dest !ports and protocol type icmpv6",
 			api.Rule{
 				Action:   "allow",
-				Protocol: ProtocolFromStringV1("icmpv6"),
+				Protocol: protocolFromString("icmpv6"),
 				Destination: api.EntityRule{
 					NotPorts: []numorstring.Port{},
 				},
@@ -816,7 +437,7 @@ func init() {
 		Entry("should reject Rule with dest ports and protocol type tcp",
 			api.Rule{
 				Action:   "allow",
-				Protocol: ProtocolFromStringV1("sctp"),
+				Protocol: protocolFromString("sctp"),
 				Destination: api.EntityRule{
 					Ports: []numorstring.Port{numorstring.SinglePort(1)},
 				},
@@ -824,7 +445,7 @@ func init() {
 		Entry("should reject Rule with dest !ports and protocol type udp",
 			api.Rule{
 				Action:   "allow",
-				Protocol: ProtocolFromStringV1("icmp"),
+				Protocol: protocolFromString("icmp"),
 				Destination: api.EntityRule{
 					NotPorts: []numorstring.Port{numorstring.SinglePort(1)},
 				},
@@ -832,47 +453,47 @@ func init() {
 		Entry("should reject Rule with invalid source ports and protocol type tcp",
 			api.Rule{
 				Action:   "allow",
-				Protocol: ProtocolFromStringV1("tcp"),
+				Protocol: protocolFromString("tcp"),
 				Source: api.EntityRule{
-					Ports: []numorstring.Port{{MinPort: 200, MaxPort: 100}},
+					Ports: []numorstring.Port{numorstring.Port{MinPort: 200, MaxPort: 100}},
 				},
 			}, false),
 		Entry("should reject Rule with invalid source !ports and protocol type tcp",
 			api.Rule{
 				Action:   "allow",
-				Protocol: ProtocolFromStringV1("tcp"),
+				Protocol: protocolFromString("tcp"),
 				Source: api.EntityRule{
-					NotPorts: []numorstring.Port{{MinPort: 200, MaxPort: 100}},
+					NotPorts: []numorstring.Port{numorstring.Port{MinPort: 200, MaxPort: 100}},
 				},
 			}, false),
 		Entry("should reject Rule with invalid dest ports and protocol type tcp",
 			api.Rule{
 				Action:   "allow",
-				Protocol: ProtocolFromStringV1("tcp"),
+				Protocol: protocolFromString("tcp"),
 				Destination: api.EntityRule{
-					Ports: []numorstring.Port{{MinPort: 200, MaxPort: 100}},
+					Ports: []numorstring.Port{numorstring.Port{MinPort: 200, MaxPort: 100}},
 				},
 			}, false),
 		Entry("should reject Rule with invalid dest !ports and protocol type tcp",
 			api.Rule{
 				Action:   "allow",
-				Protocol: ProtocolFromStringV1("tcp"),
+				Protocol: protocolFromString("tcp"),
 				Destination: api.EntityRule{
-					NotPorts: []numorstring.Port{{MinPort: 200, MaxPort: 100}},
+					NotPorts: []numorstring.Port{numorstring.Port{MinPort: 200, MaxPort: 100}},
 				},
 			}, false),
 		Entry("should reject Rule with one invalid port in the port range (MinPort 0)",
 			api.Rule{
 				Action:   "allow",
-				Protocol: ProtocolFromStringV1("tcp"),
+				Protocol: protocolFromString("tcp"),
 				Destination: api.EntityRule{
-					NotPorts: []numorstring.Port{{MinPort: 0, MaxPort: 100}},
+					NotPorts: []numorstring.Port{numorstring.Port{MinPort: 0, MaxPort: 100}},
 				},
 			}, false),
 		Entry("should reject rule mixed IPv4 (src) and IPv6 (dest)",
 			api.Rule{
 				Action:   "allow",
-				Protocol: ProtocolFromStringV1("tcp"),
+				Protocol: protocolFromString("tcp"),
 				Source: api.EntityRule{
 					Net: &netv4_3,
 				},
@@ -883,7 +504,7 @@ func init() {
 		Entry("should reject rule mixed IPv6 (src) and IPv4 (dest)",
 			api.Rule{
 				Action:   "allow",
-				Protocol: ProtocolFromStringV1("tcp"),
+				Protocol: protocolFromString("tcp"),
 				Source: api.EntityRule{
 					Net: &netv6_2,
 				},
@@ -894,7 +515,7 @@ func init() {
 		Entry("should reject rule mixed IPv6 version and IPv4 Net",
 			api.Rule{
 				Action:    "allow",
-				Protocol:  ProtocolFromStringV1("tcp"),
+				Protocol:  protocolFromString("tcp"),
 				IPVersion: &V6,
 				Source: api.EntityRule{
 					Net: &netv4_4,
@@ -906,7 +527,7 @@ func init() {
 		Entry("should reject rule mixed IPVersion and Source Net IP version",
 			api.Rule{
 				Action:    "allow",
-				Protocol:  ProtocolFromStringV1("tcp"),
+				Protocol:  protocolFromString("tcp"),
 				IPVersion: &V6,
 				Source: api.EntityRule{
 					Net: &netv4_1,
@@ -915,7 +536,7 @@ func init() {
 		Entry("should reject rule mixed IPVersion and Dest Net IP version",
 			api.Rule{
 				Action:    "allow",
-				Protocol:  ProtocolFromStringV1("tcp"),
+				Protocol:  protocolFromString("tcp"),
 				IPVersion: &V4,
 				Destination: api.EntityRule{
 					Net: &netv6_1,
@@ -924,7 +545,7 @@ func init() {
 		Entry("net list: should reject rule with net and nets",
 			api.Rule{
 				Action:    "allow",
-				Protocol:  ProtocolFromStringV1("tcp"),
+				Protocol:  protocolFromString("tcp"),
 				IPVersion: &V4,
 				Source: api.EntityRule{
 					Net:  &netv4_3,
@@ -934,7 +555,7 @@ func init() {
 		Entry("net list: should reject rule with not net and not nets",
 			api.Rule{
 				Action:    "allow",
-				Protocol:  ProtocolFromStringV1("tcp"),
+				Protocol:  protocolFromString("tcp"),
 				IPVersion: &V4,
 				Source: api.EntityRule{
 					NotNet:  &netv4_3,
@@ -944,7 +565,7 @@ func init() {
 		Entry("net list: should reject rule with net and nets",
 			api.Rule{
 				Action:    "allow",
-				Protocol:  ProtocolFromStringV1("tcp"),
+				Protocol:  protocolFromString("tcp"),
 				IPVersion: &V4,
 				Destination: api.EntityRule{
 					Net:  &netv4_3,
@@ -954,7 +575,7 @@ func init() {
 		Entry("net list: should reject rule with not net and not nets",
 			api.Rule{
 				Action:    "allow",
-				Protocol:  ProtocolFromStringV1("tcp"),
+				Protocol:  protocolFromString("tcp"),
 				IPVersion: &V4,
 				Destination: api.EntityRule{
 					NotNet:  &netv4_3,
@@ -964,7 +585,7 @@ func init() {
 		Entry("net list: should reject rule mixed IPv4 (src) and IPv6 (dest)",
 			api.Rule{
 				Action:   "allow",
-				Protocol: ProtocolFromStringV1("tcp"),
+				Protocol: protocolFromString("tcp"),
 				Source: api.EntityRule{
 					Nets: []*net.IPNet{&netv4_3},
 				},
@@ -975,7 +596,7 @@ func init() {
 		Entry("net list: should reject rule mixed IPv6 (src) and IPv4 (dest)",
 			api.Rule{
 				Action:   "allow",
-				Protocol: ProtocolFromStringV1("tcp"),
+				Protocol: protocolFromString("tcp"),
 				Source: api.EntityRule{
 					Nets: []*net.IPNet{&netv6_2},
 				},
@@ -986,7 +607,7 @@ func init() {
 		Entry("net list: should reject rule mixed IPv6 version and IPv4 Net",
 			api.Rule{
 				Action:    "allow",
-				Protocol:  ProtocolFromStringV1("tcp"),
+				Protocol:  protocolFromString("tcp"),
 				IPVersion: &V6,
 				Source: api.EntityRule{
 					Nets: []*net.IPNet{&netv4_4},
@@ -998,7 +619,7 @@ func init() {
 		Entry("net list: should reject rule mixed IPv6 version and IPv4 Net",
 			api.Rule{
 				Action:    "allow",
-				Protocol:  ProtocolFromStringV1("tcp"),
+				Protocol:  protocolFromString("tcp"),
 				IPVersion: &V6,
 				Source: api.EntityRule{
 					Net: &netv4_4,
@@ -1010,7 +631,7 @@ func init() {
 		Entry("net list: should reject rule mixed IPVersion and Source Net IP version",
 			api.Rule{
 				Action:    "allow",
-				Protocol:  ProtocolFromStringV1("tcp"),
+				Protocol:  protocolFromString("tcp"),
 				IPVersion: &V6,
 				Source: api.EntityRule{
 					Nets: []*net.IPNet{&netv4_1},
@@ -1019,7 +640,7 @@ func init() {
 		Entry("net list: should reject rule mixed IPVersion and Dest Net IP version",
 			api.Rule{
 				Action:    "allow",
-				Protocol:  ProtocolFromStringV1("tcp"),
+				Protocol:  protocolFromString("tcp"),
 				IPVersion: &V4,
 				Destination: api.EntityRule{
 					Nets: []*net.IPNet{&netv6_1},
@@ -1120,8 +741,8 @@ func init() {
 	)
 }
 
-func ProtocolFromStringV1(s string) *numorstring.Protocol {
-	p := numorstring.ProtocolFromStringV1(s)
+func protocolFromString(s string) *numorstring.Protocol {
+	p := numorstring.ProtocolFromString(s)
 	return &p
 }
 

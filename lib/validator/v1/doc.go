@@ -13,9 +13,8 @@
 // limitations under the License.
 
 /*
-Package validator implements common field and structure validation that is
+package v1 implements common field and structure validation that is
 used to validate the API structures supplied on the client interface, and
 is also used internally to validate the information stored in the backend
 datastore.
-*/
-package v1
+*/package v1
