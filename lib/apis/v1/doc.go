@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /*
-Package v1 implements the struct definitions used on the northbound client API.
+Package api implements the struct definitions used on the northbound client API.
 
 In particular this includes:
 	-  The various resource types as exposed on the Northbound API.  The valid resource

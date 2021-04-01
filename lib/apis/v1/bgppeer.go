@@ -17,7 +17,7 @@ package v1
 import (
 	"fmt"
 
-	"github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
+	unversioned "github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
 	"github.com/unai-ttxu/libcalico-go/lib/net"
 	"github.com/unai-ttxu/libcalico-go/lib/numorstring"
 	"github.com/unai-ttxu/libcalico-go/lib/scope"

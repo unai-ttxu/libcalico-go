@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2017 Tigera, Inc. All rights reserved.
+// Copyright (c) 2016 Tigera, Inc. All rights reserved.
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,9 +17,8 @@ package v1
 import (
 	"fmt"
 
-	"github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
+	unversioned "github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
 	"github.com/unai-ttxu/libcalico-go/lib/net"
-	"github.com/unai-ttxu/libcalico-go/lib/numorstring"
 )
 
 type WorkloadEndpoint struct {
@@ -47,13 +46,13 @@ type WorkloadEndpointMetadata struct {
 
 	// The name of the endpoint.  This may be omitted on a create, in which case an endpoint
 	// ID will be automatically created, and the endpoint ID will be included in the response.
-	Name string `json:"name,omitempty" validate:"omitempty,namespacedName"`
+	Name string `json:"name,omitempty" validate:"omitempty,namespacedname"`
 
 	// The name of the workload.
-	Workload string `json:"workload,omitempty" validate:"omitempty,namespacedName"`
+	Workload string `json:"workload,omitempty" validate:"omitempty,namespacedname"`
 
 	// The name of the orchestrator.
-	Orchestrator string `json:"orchestrator,omitempty" validate:"omitempty,namespacedName"`
+	Orchestrator string `json:"orchestrator,omitempty" validate:"omitempty,namespacedname"`
 
 	// The node name identifying the Calico node instance.
 	Node string `json:"node,omitempty" validate:"omitempty,name"`
@@ -98,16 +97,13 @@ type WorkloadEndpointSpec struct {
 	// A list of security Profile resources that apply to this endpoint. Each profile is
 	// applied in the order that they appear in this list.  Profile rules are applied
 	// after the selector-based security policy.
-	Profiles []string `json:"profiles,omitempty" validate:"omitempty,dive,namespacedName"`
+	Profiles []string `json:"profiles,omitempty" validate:"omitempty,dive,namespacedname"`
 
 	// InterfaceName the name of the Linux interface on the host: for example, tap80.
 	InterfaceName string `json:"interfaceName,omitempty" validate:"interface"`
 
 	// MAC is the MAC address of the endpoint interface.
 	MAC *net.MAC `json:"mac,omitempty" validate:"omitempty,mac"`
-
-	// Ports contains the endpoint's named ports, which may be referenced in security policy rules.
-	Ports []EndpointPort `json:"ports,omitempty" validate:"omitempty,dive"`
 }
 
 // IPNat contains a single NAT mapping for a WorkloadEndpoint resource.
@@ -118,12 +114,6 @@ type IPNAT struct {
 
 	// The external IP address.
 	ExternalIP net.IP `json:"externalIP"`
-}
-
-type EndpointPort struct {
-	Name     string               `json:"name" validate:"name"`
-	Protocol numorstring.Protocol `json:"protocol"`
-	Port     uint16               `json:"port" validate:"gt=0"`
 }
 
 // String returns a friendly form of an IPNAT.

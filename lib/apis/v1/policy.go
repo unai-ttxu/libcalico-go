@@ -17,7 +17,7 @@ package v1
 import (
 	"fmt"
 
-	"github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
+	unversioned "github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
 )
 
 // Policy contains information about a security Policy resource.  This contains a set of
@@ -59,7 +59,7 @@ type PolicyMetadata struct {
 	unversioned.ObjectMetadata
 
 	// The name of the selector-based security policy.
-	Name string `json:"name,omitempty" validate:"omitempty,namespacedName"`
+	Name string `json:"name,omitempty" validate:"omitempty,namespacedname"`
 
 	// Arbitrary key-value information to be used by clients.
 	Annotations map[string]string `json:"annotations,omitempty" validate:"omitempty"`
@@ -132,7 +132,7 @@ type PolicySpec struct {
 	//
 	// When the policy is read back again, Types will always be one of these values, never empty
 	// or nil.
-	Types []PolicyType `json:"types,omitempty" validate:"omitempty,dive,policyType"`
+	Types []PolicyType `json:"types,omitempty" validate:"omitempty,dive,policytype"`
 }
 
 // PolicyType enumerates the possible values of the PolicySpec Types field.

@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2017 Tigera, Inc. All rights reserved.
+// Copyright (c) 2016 Tigera, Inc. All rights reserved.
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ package v1
 import (
 	"fmt"
 
-	"github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
+	unversioned "github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
 	"github.com/unai-ttxu/libcalico-go/lib/net"
 )
 
@@ -44,7 +44,7 @@ type HostEndpointMetadata struct {
 	unversioned.ObjectMetadata
 
 	// The name of the endpoint.
-	Name string `json:"name,omitempty" validate:"omitempty,namespacedName"`
+	Name string `json:"name,omitempty" validate:"omitempty,namespacedname"`
 
 	// The node name identifying the Calico node instance.
 	Node string `json:"node,omitempty" validate:"omitempty,name"`
@@ -76,10 +76,7 @@ type HostEndpointSpec struct {
 	// A list of identifiers of security Profile objects that apply to this endpoint. Each
 	// profile is applied in the order that they appear in this list.  Profile rules are applied
 	// after the selector-based security policy.
-	Profiles []string `json:"profiles,omitempty" validate:"omitempty,dive,namespacedName"`
-
-	// Ports contains the endpoint's named ports, which may be referenced in security policy rules.
-	Ports []EndpointPort `json:"ports,omitempty" validate:"omitempty,dive"`
+	Profiles []string `json:"profiles,omitempty" validate:"omitempty,dive,namespacedname"`
 }
 
 // NewHostEndpoint creates a new (zeroed) HostEndpoint struct with the TypeMetadata initialised to the current

@@ -17,8 +17,8 @@ package v1
 import (
 	"fmt"
 
-	"github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
-	"github.com/unai-ttxu/libcalico-go/lib/backend/encap"
+	unversioned "github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
+	"github.com/unai-ttxu/libcalico-go/lib/ipip"
 	"github.com/unai-ttxu/libcalico-go/lib/net"
 )
 
@@ -75,7 +75,7 @@ type IPIPConfiguration struct {
 	// addresses within this pool.  A mode of "cross-subnet" will only use IPIP
 	// tunneling when the destination node is on a different subnet to the
 	// originating node.  The default value (if not specified) is "always".
-	Mode encap.Mode `json:"mode,omitempty" validate:"ipIpMode"`
+	Mode ipip.Mode `json:"mode,omitempty" validate:"ipipmode"`
 }
 
 // NewIPPool creates a new (zeroed) Pool struct with the TypeMetadata initialised to the current

@@ -17,7 +17,7 @@ package v1
 import (
 	"fmt"
 
-	"github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
+	unversioned "github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
 )
 
 // Profile contains the details a security profile resource.  A profile is set of security rules
@@ -46,7 +46,7 @@ type ProfileMetadata struct {
 	unversioned.ObjectMetadata
 
 	// The name of the endpoint.
-	Name string `json:"name,omitempty" validate:"omitempty,namespacedName"`
+	Name string `json:"name,omitempty" validate:"omitempty,namespacedname"`
 
 	// A list of tags that are applied to each endpoint that references this profile.
 	Tags []string `json:"tags,omitempty" validate:"omitempty,dive,tag"`
