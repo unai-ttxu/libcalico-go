@@ -87,7 +87,7 @@ func (w *WorkloadEndpointConverter) ConvertAPIToKVPair(a unversioned.Resource) (
 			IPv4Gateway:      ah.Spec.IPv4Gateway,
 			IPv6Gateway:      ah.Spec.IPv6Gateway,
 		},
-		Revision: ah.Metadata.Revision,
+		Revision: ah.Metadata.Revision.(string),
 	}
 
 	return &d, nil
