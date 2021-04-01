@@ -20,10 +20,8 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"context"
-
-	"github.com/unai-ttxu/libcalico-go/lib/backend/api"
-	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
+	api "github.com/unai-ttxu/libcalico-go/lib/backend/apiv1"
+	model "github.com/unai-ttxu/libcalico-go/lib/backend/modelv1"
 	"github.com/unai-ttxu/libcalico-go/lib/errors"
 	"github.com/unai-ttxu/libcalico-go/lib/net"
 	"github.com/unai-ttxu/libcalico-go/lib/numorstring"
@@ -43,21 +41,21 @@ func (c *ModelAdaptor) EnsureInitialized() error {
 	return c.client.EnsureInitialized()
 }
 
-func (c *ModelAdaptor) Clean() error {
-	return c.client.Clean()
+func (c *ModelAdaptor) EnsureCalicoNodeInitialized(node string) error {
+	return c.client.EnsureCalicoNodeInitialized(node)
 }
 
 // Create an entry in the datastore.  This errors if the entry already exists.
-func (c *ModelAdaptor) Create(ctx context.Context, d *model.KVPair) (*model.KVPair, error) {
+func (c *ModelAdaptor) Create(d *model.KVPair) (*model.KVPair, error) {
 	var err error
 	switch k := d.Key.(type) {
 	case model.ProfileKey:
 		t, l, r := ToTagsLabelsRules(d)
-		if t, err = c.client.Create(ctx, t); err != nil {
+		if t, err = c.client.Create(t); err != nil {
 			return nil, err
-		} else if _, err := c.client.Create(ctx, l); err != nil {
+		} else if _, err := c.client.Create(l); err != nil {
 			return nil, err
-		} else if _, err := c.client.Create(ctx, r); err != nil {
+		} else if _, err := c.client.Create(r); err != nil {
 			return nil, err
 		} else {
 			d.Revision = t.Revision
@@ -65,10 +63,10 @@ func (c *ModelAdaptor) Create(ctx context.Context, d *model.KVPair) (*model.KVPa
 		}
 	case model.NodeKey:
 		p, o := toNodeComponents(d)
-		if p, err = c.client.Create(ctx, p); err != nil {
+		if p, err = c.client.Create(p); err != nil {
 			return nil, err
 		}
-		if err = c.applyOrDeleteSubcomponents(ctx, o); err != nil {
+		if err = c.applyOrDeleteSubcomponents(o); err != nil {
 			return nil, err
 		}
 		d.Revision = p.Revision
@@ -77,7 +75,7 @@ func (c *ModelAdaptor) Create(ctx context.Context, d *model.KVPair) (*model.KVPa
 		if err = validateBlockValue(d); err != nil {
 			return nil, err
 		}
-		b, err := c.client.Create(ctx, d)
+		b, err := c.client.Create(d)
 		if err != nil {
 			return nil, err
 		}
@@ -85,29 +83,29 @@ func (c *ModelAdaptor) Create(ctx context.Context, d *model.KVPair) (*model.KVPa
 		return d, nil
 	case model.GlobalBGPConfigKey:
 		nd := toDatastoreGlobalBGPConfig(*d)
-		b, err := c.client.Create(ctx, nd)
+		b, err := c.client.Create(nd)
 		if err != nil {
 			return nil, errors.UpdateErrorIdentifier(err, k)
 		}
 		d.Revision = b.Revision
 		return d, nil
 	default:
-		return c.client.Create(ctx, d)
+		return c.client.Create(d)
 	}
 }
 
 // Update an existing entry in the datastore.  This errors if the entry does
 // not exist.
-func (c *ModelAdaptor) Update(ctx context.Context, d *model.KVPair) (*model.KVPair, error) {
+func (c *ModelAdaptor) Update(d *model.KVPair) (*model.KVPair, error) {
 	var err error
 	switch d.Key.(type) {
 	case model.ProfileKey:
 		t, l, r := ToTagsLabelsRules(d)
-		if t, err = c.client.Update(ctx, t); err != nil {
+		if t, err = c.client.Update(t); err != nil {
 			return nil, err
-		} else if _, err := c.client.Apply(ctx, l); err != nil {
+		} else if _, err := c.client.Apply(l); err != nil {
 			return nil, err
-		} else if _, err := c.client.Apply(ctx, r); err != nil {
+		} else if _, err := c.client.Apply(r); err != nil {
 			return nil, err
 		} else {
 			d.Revision = t.Revision
@@ -115,10 +113,10 @@ func (c *ModelAdaptor) Update(ctx context.Context, d *model.KVPair) (*model.KVPa
 		}
 	case model.NodeKey:
 		p, o := toNodeComponents(d)
-		if p, err = c.client.Update(ctx, p); err != nil {
+		if p, err = c.client.Update(p); err != nil {
 			return nil, err
 		}
-		if err = c.applyOrDeleteSubcomponents(ctx, o); err != nil {
+		if err = c.applyOrDeleteSubcomponents(o); err != nil {
 			return nil, err
 		}
 		d.Revision = p.Revision
@@ -127,7 +125,7 @@ func (c *ModelAdaptor) Update(ctx context.Context, d *model.KVPair) (*model.KVPa
 		if err = validateBlockValue(d); err != nil {
 			return nil, err
 		}
-		b, err := c.client.Update(ctx, d)
+		b, err := c.client.Update(d)
 		if err != nil {
 			return nil, err
 		}
@@ -135,29 +133,29 @@ func (c *ModelAdaptor) Update(ctx context.Context, d *model.KVPair) (*model.KVPa
 		return d, nil
 	case model.GlobalBGPConfigKey:
 		nd := toDatastoreGlobalBGPConfig(*d)
-		b, err := c.client.Update(ctx, nd)
+		b, err := c.client.Update(nd)
 		if err != nil {
 			return nil, errors.UpdateErrorIdentifier(err, d.Key)
 		}
 		d.Revision = b.Revision
 		return d, nil
 	default:
-		return c.client.Update(ctx, d)
+		return c.client.Update(d)
 	}
 }
 
 // Set an existing entry in the datastore.  This ignores whether an entry already
 // exists.
-func (c *ModelAdaptor) Apply(ctx context.Context, d *model.KVPair) (*model.KVPair, error) {
+func (c *ModelAdaptor) Apply(d *model.KVPair) (*model.KVPair, error) {
 	var err error
 	switch d.Key.(type) {
 	case model.ProfileKey:
 		t, l, r := ToTagsLabelsRules(d)
-		if t, err = c.client.Apply(ctx, t); err != nil {
+		if t, err = c.client.Apply(t); err != nil {
 			return nil, err
-		} else if _, err := c.client.Apply(ctx, l); err != nil {
+		} else if _, err := c.client.Apply(l); err != nil {
 			return nil, err
-		} else if _, err := c.client.Apply(ctx, r); err != nil {
+		} else if _, err := c.client.Apply(r); err != nil {
 			return nil, errors.UpdateErrorIdentifier(err, d.Key)
 		} else {
 			d.Revision = t.Revision
@@ -165,10 +163,10 @@ func (c *ModelAdaptor) Apply(ctx context.Context, d *model.KVPair) (*model.KVPai
 		}
 	case model.NodeKey:
 		p, o := toNodeComponents(d)
-		if p, err = c.client.Apply(ctx, p); err != nil {
+		if p, err = c.client.Apply(p); err != nil {
 			return nil, err
 		}
-		if err = c.applyOrDeleteSubcomponents(context.Background(), o); err != nil {
+		if err = c.applyOrDeleteSubcomponents(o); err != nil {
 			return nil, err
 		}
 		d.Revision = p.Revision
@@ -177,7 +175,7 @@ func (c *ModelAdaptor) Apply(ctx context.Context, d *model.KVPair) (*model.KVPai
 		if err = validateBlockValue(d); err != nil {
 			return nil, err
 		}
-		b, err := c.client.Apply(ctx, d)
+		b, err := c.client.Apply(d)
 		if err != nil {
 			return nil, err
 		}
@@ -185,99 +183,95 @@ func (c *ModelAdaptor) Apply(ctx context.Context, d *model.KVPair) (*model.KVPai
 		return d, nil
 	case model.GlobalBGPConfigKey:
 		nd := toDatastoreGlobalBGPConfig(*d)
-		b, err := c.client.Apply(ctx, nd)
+		b, err := c.client.Apply(nd)
 		if err != nil {
 			return nil, errors.UpdateErrorIdentifier(err, d.Key)
 		}
 		d.Revision = b.Revision
 		return d, nil
 	default:
-		return c.client.Apply(ctx, d)
+		return c.client.Apply(d)
 	}
 }
 
 // Delete an entry in the datastore.  This errors if the entry does not exists.
-func (c *ModelAdaptor) Delete(ctx context.Context, k model.Key, rev string) (*model.KVPair, error) {
+func (c *ModelAdaptor) Delete(d *model.KVPair) error {
 	var err error
-	switch key := k.(type) {
+	switch d.Key.(type) {
 	case model.NodeKey:
-		p, o := toNodeDeleteComponents(key)
-		if err = c.applyOrDeleteSubcomponents(ctx, o); err != nil {
-			return nil, err
+		p, o := toNodeDeleteComponents(d)
+		if err = c.applyOrDeleteSubcomponents(o); err != nil {
+			return err
 		}
-		if _, err = c.client.Delete(ctx, p.Key, rev); err != nil {
-			return nil, err
+		if err = c.client.Delete(p); err != nil {
+			return err
 		}
-		return nil, nil
+		return nil
 	case model.GlobalBGPConfigKey:
-		nd := toDatastoreGlobalBGPConfig(model.KVPair{Key: k})
-		_, err := c.client.Delete(ctx, nd.Key, rev)
-		return nil, errors.UpdateErrorIdentifier(err, k)
+		nd := toDatastoreGlobalBGPConfig(*d)
+		err := c.client.Delete(nd)
+		return errors.UpdateErrorIdentifier(err, d.Key)
 	default:
-		return c.client.Delete(ctx, k, rev)
+		return c.client.Delete(d)
 	}
 }
 
-func (c *ModelAdaptor) DeleteKVP(ctx context.Context, kvp *model.KVPair) (*model.KVPair, error) {
-	return nil, errors.ErrorOperationNotSupported{Operation: "DeleteKVP", Identifier: kvp.Key}
-}
-
 // Get an entry from the datastore.  This errors if the entry does not exist.
-func (c *ModelAdaptor) Get(ctx context.Context, k model.Key, rev string) (*model.KVPair, error) {
+func (c *ModelAdaptor) Get(k model.Key) (*model.KVPair, error) {
 	switch kt := k.(type) {
 	case model.ProfileKey:
-		return c.getProfile(ctx, k)
+		return c.getProfile(k)
 	case model.NodeKey:
-		return c.getNode(ctx, kt)
+		return c.getNode(kt)
 	case model.BlockKey:
-		return c.getBlock(ctx, k, rev)
+		return c.getBlock(k)
 	case model.GlobalBGPConfigKey:
 		nk := toDatastoreGlobalBGPConfigKey(kt)
-		if kvp, err := c.client.Get(ctx, nk, rev); err != nil {
+		if kvp, err := c.client.Get(nk); err != nil {
 			return nil, errors.UpdateErrorIdentifier(err, k)
 		} else {
 			return fromDatastoreGlobalBGPConfig(*kvp), nil
 		}
 	default:
-		return c.client.Get(ctx, k, rev)
+		return c.client.Get(k)
 	}
 }
 
 // List entries in the datastore.  This may return an empty list of there are
 // no entries matching the request in the ListInterface.
-func (c *ModelAdaptor) List(ctx context.Context, l model.ListInterface, rev string) (*model.KVPairList, error) {
+func (c *ModelAdaptor) List(l model.ListInterface) ([]*model.KVPair, error) {
 	switch lt := l.(type) {
 	case model.NodeListOptions:
-		return c.listNodes(ctx, lt)
+		return c.listNodes(lt)
 	case model.BlockListOptions:
-		return c.listBlock(ctx, lt)
+		return c.listBlock(lt)
 	case model.GlobalBGPConfigListOptions:
 		nl := toDatastoreGlobalBGPConfigList(lt)
-		if kvps, err := c.client.List(ctx, nl, ""); err != nil {
+		if kvps, err := c.client.List(nl); err != nil {
 			return nil, errors.UpdateErrorIdentifier(err, l)
 		} else {
-			for i, kvp := range kvps.KVPairs {
-				kvps.KVPairs[i] = fromDatastoreGlobalBGPConfig(*kvp)
+			for i, kvp := range kvps {
+				kvps[i] = fromDatastoreGlobalBGPConfig(*kvp)
 			}
 			return kvps, nil
 		}
 	default:
-		return c.client.List(ctx, l, "")
+		return c.client.List(l)
 	}
 }
 
-func (c *ModelAdaptor) Watch(ctx context.Context, l model.ListInterface, revision string) (api.WatchInterface, error) {
-	return c.client.Watch(ctx, l, revision)
+func (c *ModelAdaptor) Syncer(callbacks api.SyncerCallbacks) api.Syncer {
+	return c.client.Syncer(callbacks)
 }
 
 // getProfile gets the composite profile by getting the individual components
 // and joining the results together.
-func (c *ModelAdaptor) getProfile(ctx context.Context, k model.Key) (*model.KVPair, error) {
+func (c *ModelAdaptor) getProfile(k model.Key) (*model.KVPair, error) {
 	var t, l, r *model.KVPair
 	var err error
 	pk := k.(model.ProfileKey)
 
-	if t, err = c.client.Get(ctx, model.ProfileTagsKey{pk}, ""); err != nil {
+	if t, err = c.client.Get(model.ProfileTagsKey{pk}); err != nil {
 		return nil, err
 	}
 	d := model.KVPair{
@@ -288,10 +282,10 @@ func (c *ModelAdaptor) getProfile(ctx context.Context, k model.Key) (*model.KVPa
 		Revision: t.Revision,
 	}
 	p := d.Value.(*model.Profile)
-	if l, err = c.client.Get(ctx, model.ProfileLabelsKey{pk}, ""); err == nil {
+	if l, err = c.client.Get(model.ProfileLabelsKey{pk}); err == nil {
 		p.Labels = l.Value.(map[string]string)
 	}
-	if r, err = c.client.Get(ctx, model.ProfileRulesKey{pk}, ""); err == nil {
+	if r, err = c.client.Get(model.ProfileRulesKey{pk}); err == nil {
 		p.Rules = *r.Value.(*model.ProfileRules)
 	}
 	return &d, nil
@@ -300,10 +294,10 @@ func (c *ModelAdaptor) getProfile(ctx context.Context, k model.Key) (*model.KVPa
 // getBlock gets KVPair for Block. It gets the block value first,
 // then checks for `Affinity` field first, then `HostAffinity` as a backup.
 // For more details see: https://github.com/unai-ttxu/libcalico-go/issues/226
-func (c *ModelAdaptor) getBlock(ctx context.Context, k model.Key, rev string) (*model.KVPair, error) {
+func (c *ModelAdaptor) getBlock(k model.Key) (*model.KVPair, error) {
 	bk := k.(model.BlockKey)
 
-	v, err := c.client.Get(ctx, model.BlockKey{CIDR: bk.CIDR}, rev)
+	v, err := c.client.Get(model.BlockKey{CIDR: bk.CIDR})
 	if err != nil {
 		return nil, err
 	}
@@ -316,17 +310,17 @@ func (c *ModelAdaptor) getBlock(ctx context.Context, k model.Key, rev string) (*
 
 // getNode gets the composite node by getting the individual components
 // and joining the results together.
-func (c *ModelAdaptor) getNode(ctx context.Context, nk model.NodeKey) (*model.KVPair, error) {
+func (c *ModelAdaptor) getNode(nk model.NodeKey) (*model.KVPair, error) {
 	var err error
 
 	// Fill in the Metadata specific part of the node configuration.  At the
 	// moment, there is nothing to fill in.
-	if _, err = c.client.Get(ctx, model.HostMetadataKey{nk.Hostname}, ""); err != nil {
+	if _, err = c.client.Get(model.HostMetadataKey{nk.Hostname}); err != nil {
 		return nil, err
 	}
 	nv := model.Node{}
 
-	err = c.getNodeSubcomponents(ctx, nk, &nv)
+	err = c.getNodeSubcomponents(nk, &nv)
 	if err != nil {
 		return nil, err
 	}
@@ -348,15 +342,15 @@ func validateBlockValue(kvp *model.KVPair) error {
 // Note that enumeration of the primary component is horribly inefficient
 // because of the way we do our list queries - we'll enumerate all endpoints on
 // host as well!
-func (c *ModelAdaptor) listNodes(ctx context.Context, l model.NodeListOptions) (*model.KVPairList, error) {
+func (c *ModelAdaptor) listNodes(l model.NodeListOptions) ([]*model.KVPair, error) {
 	hml := model.HostMetadataListOptions{Hostname: l.Hostname}
-	hmr, err := c.client.List(ctx, hml, "")
+	hmr, err := c.client.List(hml)
 	if err != nil {
 		return nil, err
 	}
 
-	results := make([]*model.KVPair, len(hmr.KVPairs))
-	for idx, hmkv := range hmr.KVPairs {
+	results := make([]*model.KVPair, len(hmr))
+	for idx, hmkv := range hmr {
 		hmk := hmkv.Key.(model.HostMetadataKey)
 
 		// Fill in the metadata part of the node - at the moment there is
@@ -364,7 +358,7 @@ func (c *ModelAdaptor) listNodes(ctx context.Context, l model.NodeListOptions) (
 		nk := model.NodeKey{Hostname: hmk.Hostname}
 		nv := model.Node{}
 
-		err = c.getNodeSubcomponents(ctx, nk, &nv)
+		err = c.getNodeSubcomponents(nk, &nv)
 		if err != nil {
 			return nil, err
 		}
@@ -372,30 +366,30 @@ func (c *ModelAdaptor) listNodes(ctx context.Context, l model.NodeListOptions) (
 		results[idx] = &model.KVPair{Key: nk, Value: &nv}
 	}
 
-	return &model.KVPairList{KVPairs: results}, nil
+	return results, nil
 }
 
 // listBlock returns list of KVPairs for Block, includes making sure
 // backwards compatiblity. See getBlock for more details.
-func (c *ModelAdaptor) listBlock(ctx context.Context, l model.BlockListOptions) (*model.KVPairList, error) {
+func (c *ModelAdaptor) listBlock(l model.BlockListOptions) ([]*model.KVPair, error) {
 
 	// Get a list of block KVPairs.
-	blockList, err := c.client.List(ctx, l, "")
+	blockList, err := c.client.List(l)
 	if err != nil {
 		return nil, err
 	}
 
 	// Create an empty slice of KVPair.
-	results := make([]*model.KVPair, len(blockList.KVPairs))
+	results := make([]*model.KVPair, len(blockList))
 
 	// Go through the list to make sure Affinity field has a proper value,
 	// and maps the value to Affinity if the deprecated HostAffinity field is used
 	// by calling ensureBlockAffinity, and populate the KVPair slice to return.
-	for i, bkv := range blockList.KVPairs {
+	for i, bkv := range blockList {
 		results[i] = ensureBlockAffinity(bkv)
 	}
 
-	return &model.KVPairList{KVPairs: results}, nil
+	return results, nil
 }
 
 // ensureBlockAffinity ensures Affinity field has a proper value,
@@ -418,13 +412,13 @@ func ensureBlockAffinity(kvp *model.KVPair) *model.KVPair {
 
 // Get the node sub components and fill in the details in the supplied node
 // struct.
-func (c *ModelAdaptor) getNodeSubcomponents(ctx context.Context, nk model.NodeKey, nv *model.Node) error {
+func (c *ModelAdaptor) getNodeSubcomponents(nk model.NodeKey, nv *model.Node) error {
 	var component *model.KVPair
 	var err error
 	var strval string
 
 	// Fill in the Metadata specific part of the node configuration.
-	if component, err = c.client.Get(ctx, model.NodeBGPConfigKey{Nodename: nk.Hostname, Name: "ip_addr_v4"}, ""); err == nil {
+	if component, err = c.client.Get(model.NodeBGPConfigKey{Nodename: nk.Hostname, Name: "ip_addr_v4"}); err == nil {
 		strval = component.Value.(string)
 		if strval != "" {
 			nv.BGPIPv4Addr = &net.IP{}
@@ -438,7 +432,7 @@ func (c *ModelAdaptor) getNodeSubcomponents(ctx context.Context, nk model.NodeKe
 		return err
 	}
 
-	if component, err = c.client.Get(ctx, model.NodeBGPConfigKey{Nodename: nk.Hostname, Name: "network_v4"}, ""); err == nil {
+	if component, err = c.client.Get(model.NodeBGPConfigKey{Nodename: nk.Hostname, Name: "network_v4"}); err == nil {
 		strval = component.Value.(string)
 		if strval != "" {
 			_, nv.BGPIPv4Net, err = net.ParseCIDR(strval)
@@ -451,7 +445,7 @@ func (c *ModelAdaptor) getNodeSubcomponents(ctx context.Context, nk model.NodeKe
 		return err
 	}
 
-	if component, err = c.client.Get(ctx, model.NodeBGPConfigKey{Nodename: nk.Hostname, Name: "ip_addr_v6"}, ""); err == nil {
+	if component, err = c.client.Get(model.NodeBGPConfigKey{Nodename: nk.Hostname, Name: "ip_addr_v6"}); err == nil {
 		strval = component.Value.(string)
 		if strval != "" {
 			nv.BGPIPv6Addr = &net.IP{}
@@ -465,7 +459,7 @@ func (c *ModelAdaptor) getNodeSubcomponents(ctx context.Context, nk model.NodeKe
 		return err
 	}
 
-	if component, err = c.client.Get(ctx, model.NodeBGPConfigKey{Nodename: nk.Hostname, Name: "network_v6"}, ""); err == nil {
+	if component, err = c.client.Get(model.NodeBGPConfigKey{Nodename: nk.Hostname, Name: "network_v6"}); err == nil {
 		strval = component.Value.(string)
 		if strval != "" {
 			_, nv.BGPIPv6Net, err = net.ParseCIDR(strval)
@@ -478,7 +472,7 @@ func (c *ModelAdaptor) getNodeSubcomponents(ctx context.Context, nk model.NodeKe
 		return err
 	}
 
-	if component, err = c.client.Get(ctx, model.NodeBGPConfigKey{Nodename: nk.Hostname, Name: "as_num"}, ""); err == nil {
+	if component, err = c.client.Get(model.NodeBGPConfigKey{Nodename: nk.Hostname, Name: "as_num"}); err == nil {
 		strval = component.Value.(string)
 		if strval != "" {
 			asn, err := numorstring.ASNumberFromString(strval)
@@ -492,7 +486,7 @@ func (c *ModelAdaptor) getNodeSubcomponents(ctx context.Context, nk model.NodeKe
 		return err
 	}
 
-	if component, err := c.client.Get(ctx, model.OrchRefKey{Hostname: nk.Hostname}, ""); err == nil {
+	if component, err := c.client.Get(model.OrchRefKey{Hostname: nk.Hostname}); err == nil {
 		nv.OrchRefs = component.Value.([]model.OrchRef)
 	}
 
@@ -501,15 +495,15 @@ func (c *ModelAdaptor) getNodeSubcomponents(ctx context.Context, nk model.NodeKe
 
 // applyOrDeleteSubcomponents applies the configuration if the value is non-nil
 // or deletes the entry if the value is nil.
-func (c *ModelAdaptor) applyOrDeleteSubcomponents(ctx context.Context, components []*model.KVPair) error {
+func (c *ModelAdaptor) applyOrDeleteSubcomponents(components []*model.KVPair) error {
 	for _, component := range components {
 		// If there is a value, apply it to either create or update.  Otherwise
 		// delete the entry, ignoring error indicating the entry does not exist.
 		if component.Value != nil {
-			if _, err := c.client.Apply(ctx, component); err != nil {
+			if _, err := c.client.Apply(component); err != nil {
 				return err
 			}
-		} else if _, err := c.client.Delete(ctx, component.Key, component.Revision); err != nil {
+		} else if err := c.client.Delete(component); err != nil {
 			if _, ok := err.(errors.ErrorResourceDoesNotExist); !ok {
 				return err
 			}
@@ -668,40 +662,42 @@ func toNodeComponents(d *model.KVPair) (primary *model.KVPair, optional []*model
 
 // toNodeDeleteComponents is similar to function toNodeComponents, but returns nil
 // interface values which the applyOrDeleteSubcomponents method will treat as a delete.
-func toNodeDeleteComponents(nk model.NodeKey) (primary *model.KVPair, optional []*model.KVPair) {
+func toNodeDeleteComponents(d *model.KVPair) (primary *model.KVPair, optional []*model.KVPair) {
+	nk := d.Key.(model.NodeKey)
 
 	primary = &model.KVPair{
-		Key: model.HostMetadataKey{nk.Hostname},
+		Key:      model.HostMetadataKey{nk.Hostname},
+		Revision: d.Revision,
 	}
 	optional = []*model.KVPair{
-		{
+		&model.KVPair{
 			Key: model.HostIPKey{nk.Hostname},
 		},
-		{
+		&model.KVPair{
 			Key: model.NodeBGPConfigKey{
 				Nodename: nk.Hostname,
 				Name:     "ip_addr_v4",
 			},
 		},
-		{
+		&model.KVPair{
 			Key: model.NodeBGPConfigKey{
 				Nodename: nk.Hostname,
 				Name:     "ip_addr_v6",
 			},
 		},
-		{
+		&model.KVPair{
 			Key: model.NodeBGPConfigKey{
 				Nodename: nk.Hostname,
 				Name:     "as_num",
 			},
 		},
-		{
+		&model.KVPair{
 			Key: model.NodeBGPConfigKey{
 				Nodename: nk.Hostname,
 				Name:     "network_v4",
 			},
 		},
-		{
+		&model.KVPair{
 			Key: model.NodeBGPConfigKey{
 				Nodename: nk.Hostname,
 				Name:     "network_v6",
@@ -732,7 +728,7 @@ func toDatastoreGlobalBGPConfigKey(key model.GlobalBGPConfigKey) model.GlobalBGP
 }
 
 // toDatastoreGlobalBGPConfigList modifies the Global BGP Config List interface to the one required by
-// the datastore (for back-compatibility with what is expected in the etcdv2 datastore driver).
+// the datastore (for back-compatibility with what is expected in teh etcdv2 datastore driver).
 func toDatastoreGlobalBGPConfigList(l model.GlobalBGPConfigListOptions) model.GlobalBGPConfigListOptions {
 	switch l.Name {
 	case "AsNumber":
@@ -746,7 +742,7 @@ func toDatastoreGlobalBGPConfigList(l model.GlobalBGPConfigListOptions) model.Gl
 }
 
 // fromDatastoreGlobalBGPKey modifies the Global BGP Config key from the one required by
-// the datastore (for back-compatibility with what is expected in the etcdv2 datastore driver).
+// the datastore (for back-compatibility with what is expected in teh etcdv2 datastore driver).
 func fromDatastoreGlobalBGPKey(key model.GlobalBGPConfigKey) model.GlobalBGPConfigKey {
 	switch key.Name {
 	case "as_num":
@@ -760,7 +756,7 @@ func fromDatastoreGlobalBGPKey(key model.GlobalBGPConfigKey) model.GlobalBGPConf
 }
 
 // toDatastoreGlobalBGPConfig modifies the Global BGP Config KVPair to the format required in the
-// datastore (for back-compatibility with what is expected in the etcdv2 datastore driver).
+// datastore (for back-compatibility with what is expected in teh etcdv2 datastore driver).
 func toDatastoreGlobalBGPConfig(d model.KVPair) *model.KVPair {
 	// Copy the KVPair, so we aren't modifying the original.
 	modifiedKey := toDatastoreGlobalBGPConfigKey(d.Key.(model.GlobalBGPConfigKey))
@@ -781,7 +777,7 @@ func toDatastoreGlobalBGPConfig(d model.KVPair) *model.KVPair {
 }
 
 // fromDatastoreGlobalBGPConfig modifies the Global BGP Config KVPair from the format required in the
-// datastore (for back-compatibility with what is expected in the etcdv2 datastore driver).
+// datastore (for back-compatibility with what is expected in teh etcdv2 datastore driver).
 func fromDatastoreGlobalBGPConfig(d model.KVPair) *model.KVPair {
 	modifiedKey := fromDatastoreGlobalBGPKey(d.Key.(model.GlobalBGPConfigKey))
 	d.Key = modifiedKey
