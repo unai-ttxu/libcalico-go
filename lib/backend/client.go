@@ -22,7 +22,6 @@ import (
 	bapi "github.com/unai-ttxu/libcalico-go/lib/backend/apiv1"
 	"github.com/unai-ttxu/libcalico-go/lib/backend/compat"
 	"github.com/unai-ttxu/libcalico-go/lib/backend/etcd"
-	"github.com/unai-ttxu/libcalico-go/lib/backend/k8s"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -42,8 +41,6 @@ func NewClient(config api.CalicoAPIConfig) (c bapi.Client, err error) {
 			// uses the composite Profile and Node KV types.
 			c = compat.NewAdaptor(c)
 		}
-	case api.Kubernetes:
-		c, err = k8s.NewKubeClient(&config.Spec.KubeConfig)
 	default:
 		err = errors.New(fmt.Sprintf("Unknown datastore type: %v",
 			config.Spec.DatastoreType))
