@@ -26,7 +26,7 @@ import (
 	api "github.com/unai-ttxu/libcalico-go/lib/apis/v1"
 	"github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
 	"github.com/unai-ttxu/libcalico-go/lib/backend"
-	bapi "github.com/unai-ttxu/libcalico-go/lib/backend/api"
+	bapi "github.com/unai-ttxu/libcalico-go/lib/backend/apiv1"
 	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
 	"github.com/unai-ttxu/libcalico-go/lib/errors"
 	validator "github.com/unai-ttxu/libcalico-go/lib/validator/v1"
