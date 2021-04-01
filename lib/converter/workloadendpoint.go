@@ -16,7 +16,7 @@ package converter
 
 import (
 	api "github.com/unai-ttxu/libcalico-go/lib/apis/v1"
-	"github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
+	unversioned "github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
 	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
 	"github.com/unai-ttxu/libcalico-go/lib/net"
 )
@@ -71,15 +71,6 @@ func (w *WorkloadEndpointConverter) ConvertAPIToKVPair(a unversioned.Resource) (
 		}
 	}
 
-	var ports []model.EndpointPort
-	for _, port := range ah.Spec.Ports {
-		ports = append(ports, model.EndpointPort{
-			Name:     port.Name,
-			Protocol: port.Protocol,
-			Port:     port.Port,
-		})
-	}
-
 	d := model.KVPair{
 		Key: k,
 		Value: &model.WorkloadEndpoint{
@@ -95,7 +86,6 @@ func (w *WorkloadEndpointConverter) ConvertAPIToKVPair(a unversioned.Resource) (
 			IPv6NAT:          ipv6NAT,
 			IPv4Gateway:      ah.Spec.IPv4Gateway,
 			IPv6Gateway:      ah.Spec.IPv6Gateway,
-			Ports:            ports,
 		},
 		Revision: ah.Metadata.Revision,
 	}
@@ -142,17 +132,6 @@ func (w *WorkloadEndpointConverter) ConvertKVPairToAPI(d *model.KVPair) (unversi
 	}
 	ah.Spec.IPv4Gateway = bh.IPv4Gateway
 	ah.Spec.IPv6Gateway = bh.IPv6Gateway
-
-	var ports []api.EndpointPort
-	for _, port := range bh.Ports {
-		ports = append(ports, api.EndpointPort{
-			Name:     port.Name,
-			Protocol: port.Protocol,
-			Port:     port.Port,
-		})
-	}
-	ah.Spec.Ports = ports
-
 	ah.Metadata.Revision = d.Revision
 
 	return ah, nil

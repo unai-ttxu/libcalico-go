@@ -16,7 +16,7 @@ package converter
 
 import (
 	api "github.com/unai-ttxu/libcalico-go/lib/apis/v1"
-	"github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
+	unversioned "github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
 	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
 )
 
@@ -54,13 +54,6 @@ func (p PolicyConverter) ConvertAPIToKVPair(a unversioned.Resource) (*model.KVPa
 			PreDNAT:       ap.Spec.PreDNAT,
 			Types:         nil, // filled in below
 		},
-	}
-
-	if ap.Spec.DoNotTrack || ap.Spec.PreDNAT {
-		// This case happens when there is a pre-existing policy in the datastore, from before
-		// the ApplyOnForward feature was available. DoNotTrack or PreDNAT policy applies to
-		// forward traffic by nature. So in this case we return ApplyOnForward flag as true.
-		d.Value.(*model.Policy).ApplyOnForward = true
 	}
 
 	if len(ap.Spec.Types) == 0 {

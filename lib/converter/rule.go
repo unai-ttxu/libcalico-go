@@ -84,8 +84,8 @@ func ruleAPIToBackend(ar api.Rule) model.Rule {
 		NotICMPType: notICMPType,
 
 		SrcTag:      ar.Source.Tag,
-		SrcNet:      normalizeIPNet(ar.Source.Net),
-		SrcNets:     normalizeIPNets(ar.Source.Nets),
+		SrcNet:      ar.Source.Net,
+		SrcNets:     ar.Source.Nets,
 		SrcSelector: ar.Source.Selector,
 		SrcPorts:    ar.Source.Ports,
 		DstTag:      ar.Destination.Tag,
@@ -95,8 +95,8 @@ func ruleAPIToBackend(ar api.Rule) model.Rule {
 		DstPorts:    ar.Destination.Ports,
 
 		NotSrcTag:      ar.Source.NotTag,
-		NotSrcNet:      normalizeIPNet(ar.Source.NotNet),
-		NotSrcNets:     normalizeIPNets(ar.Source.NotNets),
+		NotSrcNet:      ar.Source.NotNet,
+		NotSrcNets:     ar.Source.NotNets,
 		NotSrcSelector: ar.Source.NotSelector,
 		NotSrcPorts:    ar.Source.NotPorts,
 		NotDstTag:      ar.Destination.NotTag,
@@ -143,20 +143,6 @@ func ruleBackendToAPI(br model.Rule) api.Rule {
 			Type: br.NotICMPType,
 		}
 	}
-
-	// Normalize the backend source Net/Nets/NotNet/NotNets
-	// This is because of a bug where we didn't normalize
-	// source (Not)Net(s) while converting API to backend in v1.
-	br.SrcNet = normalizeIPNet(br.SrcNet)
-	br.SrcNets = normalizeIPNets(br.SrcNets)
-	br.NotSrcNet = normalizeIPNet(br.NotSrcNet)
-	br.NotSrcNets = normalizeIPNets(br.NotSrcNets)
-	// Also normalize destination (Not)Net(s) for consistency.
-	br.DstNet = normalizeIPNet(br.DstNet)
-	br.DstNets = normalizeIPNets(br.DstNets)
-	br.NotDstNet = normalizeIPNet(br.NotDstNet)
-	br.NotDstNets = normalizeIPNets(br.NotDstNets)
-
 	return api.Rule{
 		Action:      ruleActionBackendToAPI(br.Action),
 		IPVersion:   br.IPVersion,
@@ -191,7 +177,7 @@ func ruleBackendToAPI(br model.Rule) api.Rule {
 // ruleActionAPIToBackend converts the rule action field value from the API
 // value to the equivalent backend value.
 func ruleActionAPIToBackend(action string) string {
-	if action == "Pass" {
+	if action == "pass" {
 		return "next-tier"
 	}
 	return action
