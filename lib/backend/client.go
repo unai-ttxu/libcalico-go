@@ -18,7 +18,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/unai-ttxu/libcalico-go/lib/apiconfig"
+	api "github.com/unai-ttxu/libcalico-go/lib/apis/v1"
 	bapi "github.com/unai-ttxu/libcalico-go/lib/backend/api"
 	"github.com/unai-ttxu/libcalico-go/lib/backend/etcdv3"
 	"github.com/unai-ttxu/libcalico-go/lib/backend/k8s"
@@ -26,12 +26,12 @@ import (
 )
 
 // NewClient creates a new backend datastore client.
-func NewClient(config apiconfig.CalicoAPIConfig) (c bapi.Client, err error) {
+func NewClient(config api.CalicoAPIConfig) (c bapi.Client, err error) {
 	log.Debugf("Using datastore type '%s'", config.Spec.DatastoreType)
 	switch config.Spec.DatastoreType {
-	case apiconfig.EtcdV3:
+	case api.EtcdV3:
 		c, err = etcdv3.NewEtcdV3Client(&config.Spec.EtcdConfig)
-	case apiconfig.Kubernetes:
+	case api.Kubernetes:
 		c, err = k8s.NewKubeClient(&config.Spec)
 	default:
 		err = errors.New(fmt.Sprintf("Unknown datastore type: %v",
