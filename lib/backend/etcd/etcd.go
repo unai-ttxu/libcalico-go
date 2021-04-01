@@ -24,7 +24,7 @@ import (
 	"github.com/coreos/etcd/pkg/transport"
 	capi "github.com/unai-ttxu/libcalico-go/lib/apis/v1"
 	"github.com/unai-ttxu/libcalico-go/lib/backend/apiv1"
-	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
+	model "github.com/unai-ttxu/libcalico-go/lib/backend/modelv1"
 	"github.com/unai-ttxu/libcalico-go/lib/errors"
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/net/context"
