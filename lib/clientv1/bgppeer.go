@@ -17,8 +17,8 @@ package client
 import (
 	api "github.com/unai-ttxu/libcalico-go/lib/apis/v1"
 	"github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
-	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
-	"github.com/unai-ttxu/libcalico-go/lib/converter"
+	model "github.com/unai-ttxu/libcalico-go/lib/backend/modelv1"
+	converter "github.com/unai-ttxu/libcalico-go/lib/converterv1"
 	"github.com/unai-ttxu/libcalico-go/lib/scope"
 )
 
@@ -102,7 +102,7 @@ func (h *bgpPeers) List(metadata api.BGPPeerMetadata) (*api.BGPPeerList, error) 
 
 // convertMetadataToListInterface converts a BGPPeerMetadata to a BGPPeerListOptions.
 // This is part of the conversionHelper interface.
-func (h *bgpPeers) convertMetadataToListInterface(m unversioned.ResourceMetadata) (modelv1.ListInterface, error) {
+func (h *bgpPeers) convertMetadataToListInterface(m unversioned.ResourceMetadata) (model.ListInterface, error) {
 	pm := m.(api.BGPPeerMetadata)
 	if pm.Scope == scope.Global {
 		return model.GlobalBGPPeerListOptions{
@@ -118,20 +118,20 @@ func (h *bgpPeers) convertMetadataToListInterface(m unversioned.ResourceMetadata
 
 // convertMetadataToKey converts a BGPPeerMetadata to a HostBGPPeerKey/GlobalBGPPeerKey
 // This is part of the conversionHelper interface.
-func (h *bgpPeers) convertMetadataToKey(m unversioned.ResourceMetadata) (modelv1.Key, error) {
+func (h *bgpPeers) convertMetadataToKey(m unversioned.ResourceMetadata) (model.Key, error) {
 	return h.ConvertMetadataToKey(m)
 }
 
 // convertAPIToKVPair converts an API BGPPeer structure to a KVPair containing a
 // backend BGPPeer and HostBGPPeerKey/GlobalBGPPeerKey.
 // This is part of the conversionHelper interface.
-func (h *bgpPeers) convertAPIToKVPair(a unversioned.Resource) (*modelv1.KVPair, error) {
+func (h *bgpPeers) convertAPIToKVPair(a unversioned.Resource) (*model.KVPair, error) {
 	return h.ConvertAPIToKVPair(a)
 }
 
 // convertKVPairToAPI converts a KVPair containing a backend BGPPeer and HostBGPPeerKey/GlobalBGPPeerKey
 // to an API BGPPeer structure.
 // This is part of the conversionHelper interface.
-func (h *bgpPeers) convertKVPairToAPI(d *modelv1.KVPair) (unversioned.Resource, error) {
+func (h *bgpPeers) convertKVPairToAPI(d *model.KVPair) (unversioned.Resource, error) {
 	return h.ConvertKVPairToAPI(d)
 }

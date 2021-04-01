@@ -18,7 +18,7 @@ import (
 	api "github.com/unai-ttxu/libcalico-go/lib/apis/v1"
 	"github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
 	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
-	"github.com/unai-ttxu/libcalico-go/lib/converter"
+	converter "github.com/unai-ttxu/libcalico-go/lib/converterv1"
 )
 
 // PolicyInterface has methods to work with Policy resources.
