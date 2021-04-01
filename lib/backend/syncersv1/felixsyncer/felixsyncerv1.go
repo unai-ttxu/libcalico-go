@@ -15,16 +15,16 @@
 package felixsyncer
 
 import (
-	"github.com/unai-ttxu/libcalico-go/lib/apiconfig"
+	api "github.com/unai-ttxu/libcalico-go/lib/apis/v1"
 	apiv3 "github.com/unai-ttxu/libcalico-go/lib/apis/v3"
-	"github.com/unai-ttxu/libcalico-go/lib/backend/api"
+	bapi "github.com/unai-ttxu/libcalico-go/lib/backend/api"
 	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
 	"github.com/unai-ttxu/libcalico-go/lib/backend/syncersv1/updateprocessors"
 	"github.com/unai-ttxu/libcalico-go/lib/backend/watchersyncer"
 )
 
 // New creates a new Felix v1 Syncer.
-func New(client api.Client, cfg apiconfig.CalicoAPIConfigSpec, callbacks api.SyncerCallbacks) api.Syncer {
+func New(client bapi.Client, cfg api.CalicoAPIConfigSpec, callbacks bapi.SyncerCallbacks) bapi.Syncer {
 	// Create the set of ResourceTypes required for Felix.  Since the update processors
 	// also cache state, we need to create individual ones per syncer rather than create
 	// a common global set.
