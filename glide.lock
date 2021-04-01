@@ -290,6 +290,8 @@ imports:
   - transport
 - name: gopkg.in/fsnotify.v1
   version: c2828203cd70a50dcccfb2761f8b1f8ceef9a8e9
+- name: gopkg.in/go-playground/validator.v8
+  version: 5f57d2222ad794d0dffb07e664ea05e2ee07d60c
 - name: gopkg.in/go-playground/validator.v9
   version: 556b9da3c05f2a935bc086fb5a0bb55dd8112d2d
 - name: gopkg.in/inf.v0
