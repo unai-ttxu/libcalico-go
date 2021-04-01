@@ -18,7 +18,7 @@ import (
 	api "github.com/unai-ttxu/libcalico-go/lib/apis/v1"
 	unversioned "github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
 	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
-	"github.com/unai-ttxu/libcalico-go/lib/ipip"
+	ipip "github.com/unai-ttxu/libcalico-go/lib/backend/encap"
 )
 
 // IPPoolConverter implements a set of functions used for converting between
