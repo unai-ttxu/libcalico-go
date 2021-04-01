@@ -18,7 +18,7 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	api "github.com/unai-ttxu/libcalico-go/lib/apis/v1"
-	unversioned "github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
+	"github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
 	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
 	"github.com/unai-ttxu/libcalico-go/lib/errors"
 	"github.com/unai-ttxu/libcalico-go/lib/net"

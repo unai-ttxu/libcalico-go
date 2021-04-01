@@ -16,7 +16,7 @@ package converter
 
 import (
 	api "github.com/unai-ttxu/libcalico-go/lib/apis/v1"
-	unversioned "github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
+	"github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
 	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
 )
 

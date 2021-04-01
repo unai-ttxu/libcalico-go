@@ -17,7 +17,7 @@ package v1
 import (
 	"fmt"
 
-	unversioned "github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
+	"github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
 	ipip "github.com/unai-ttxu/libcalico-go/lib/backend/encap"
 	"github.com/unai-ttxu/libcalico-go/lib/net"
 )
