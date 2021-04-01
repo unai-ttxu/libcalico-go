@@ -19,7 +19,9 @@ import (
 	"fmt"
 
 	"github.com/unai-ttxu/libcalico-go/lib/apiconfig"
+	api "github.com/unai-ttxu/libcalico-go/lib/apis/v1"
 	bapi "github.com/unai-ttxu/libcalico-go/lib/backend/api"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/compat"
 	"github.com/unai-ttxu/libcalico-go/lib/backend/etcd"
 	"github.com/unai-ttxu/libcalico-go/lib/backend/etcdv3"
 	"github.com/unai-ttxu/libcalico-go/lib/backend/k8s"
@@ -32,6 +34,16 @@ func NewClient(config apiconfig.CalicoAPIConfig) (c bapi.Client, err error) {
 	switch config.Spec.DatastoreType {
 	case apiconfig.EtcdV2:
 		c, err = etcd.NewEtcdClient(&config.Spec.EtcdConfig)
+		if c != nil {
+			// Wrap the backend, which deals only in raw KV pairs with an
+			// adaptor that handles aggregate datatypes.  This allows for
+			// reading and writing Profile and Node objects, which for etcdv2
+			// are composed of multiple backend keys.
+			//
+			// This is only required for etcdv2 backend as Kuberenetes driver
+			// uses the composite Profile and Node KV types.
+			c = compat.NewAdaptor(c)
+		}
 	case apiconfig.EtcdV3:
 		c, err = etcdv3.NewEtcdV3Client(&config.Spec.EtcdConfig)
 	case apiconfig.Kubernetes:
