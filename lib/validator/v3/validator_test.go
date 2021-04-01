@@ -19,11 +19,11 @@ import (
 	. "github.com/onsi/gomega"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	apiv1 "github.com/projectcalico/libcalico-go/lib/apis/v1"
-	api "github.com/projectcalico/libcalico-go/lib/apis/v3"
-	"github.com/projectcalico/libcalico-go/lib/backend/encap"
-	"github.com/projectcalico/libcalico-go/lib/numorstring"
-	v3 "github.com/projectcalico/libcalico-go/lib/validator/v3"
+	apiv1 "github.com/unai-ttxu/libcalico-go/lib/apis/v1"
+	api "github.com/unai-ttxu/libcalico-go/lib/apis/v3"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/encap"
+	"github.com/unai-ttxu/libcalico-go/lib/numorstring"
+	v3 "github.com/unai-ttxu/libcalico-go/lib/validator/v3"
 )
 
 func init() {

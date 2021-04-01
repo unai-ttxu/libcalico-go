@@ -15,7 +15,7 @@
 package hwm_test
 
 import (
-	. "github.com/projectcalico/libcalico-go/lib/hwm"
+	. "github.com/unai-ttxu/libcalico-go/lib/hwm"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

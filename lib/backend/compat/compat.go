@@ -22,11 +22,11 @@ import (
 
 	"context"
 
-	"github.com/projectcalico/libcalico-go/lib/backend/api"
-	"github.com/projectcalico/libcalico-go/lib/backend/model"
-	"github.com/projectcalico/libcalico-go/lib/errors"
-	"github.com/projectcalico/libcalico-go/lib/net"
-	"github.com/projectcalico/libcalico-go/lib/numorstring"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/api"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
+	"github.com/unai-ttxu/libcalico-go/lib/errors"
+	"github.com/unai-ttxu/libcalico-go/lib/net"
+	"github.com/unai-ttxu/libcalico-go/lib/numorstring"
 )
 
 type ModelAdaptor struct {
@@ -299,7 +299,7 @@ func (c *ModelAdaptor) getProfile(ctx context.Context, k model.Key) (*model.KVPa
 
 // getBlock gets KVPair for Block. It gets the block value first,
 // then checks for `Affinity` field first, then `HostAffinity` as a backup.
-// For more details see: https://github.com/projectcalico/libcalico-go/issues/226
+// For more details see: https://github.com/unai-ttxu/libcalico-go/issues/226
 func (c *ModelAdaptor) getBlock(ctx context.Context, k model.Key, rev string) (*model.KVPair, error) {
 	bk := k.(model.BlockKey)
 

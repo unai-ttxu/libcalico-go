@@ -18,7 +18,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/projectcalico/libcalico-go/lib/selector/tokenizer"
+	"github.com/unai-ttxu/libcalico-go/lib/selector/tokenizer"
 	log "github.com/sirupsen/logrus"
 )
 

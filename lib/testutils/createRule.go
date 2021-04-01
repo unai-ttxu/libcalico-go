@@ -19,9 +19,9 @@ import (
 	"net"
 	"strconv"
 
-	api "github.com/projectcalico/libcalico-go/lib/apis/v1"
-	cnet "github.com/projectcalico/libcalico-go/lib/net"
-	"github.com/projectcalico/libcalico-go/lib/numorstring"
+	api "github.com/unai-ttxu/libcalico-go/lib/apis/v1"
+	cnet "github.com/unai-ttxu/libcalico-go/lib/net"
+	"github.com/unai-ttxu/libcalico-go/lib/numorstring"
 )
 
 // CreateRule takes all fields necessary to create a api.Rule object and returns ingress and egress api.Rules.

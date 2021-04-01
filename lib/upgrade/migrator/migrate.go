@@ -27,16 +27,16 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/uuid"
 
-	apiv3 "github.com/projectcalico/libcalico-go/lib/apis/v3"
-	bapi "github.com/projectcalico/libcalico-go/lib/backend/api"
-	"github.com/projectcalico/libcalico-go/lib/backend/model"
-	"github.com/projectcalico/libcalico-go/lib/clientv3"
-	cerrors "github.com/projectcalico/libcalico-go/lib/errors"
-	"github.com/projectcalico/libcalico-go/lib/numorstring"
-	"github.com/projectcalico/libcalico-go/lib/options"
-	"github.com/projectcalico/libcalico-go/lib/upgrade/converters"
-	"github.com/projectcalico/libcalico-go/lib/upgrade/migrator/clients"
-	validatorv3 "github.com/projectcalico/libcalico-go/lib/validator/v3"
+	apiv3 "github.com/unai-ttxu/libcalico-go/lib/apis/v3"
+	bapi "github.com/unai-ttxu/libcalico-go/lib/backend/api"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
+	"github.com/unai-ttxu/libcalico-go/lib/clientv3"
+	cerrors "github.com/unai-ttxu/libcalico-go/lib/errors"
+	"github.com/unai-ttxu/libcalico-go/lib/numorstring"
+	"github.com/unai-ttxu/libcalico-go/lib/options"
+	"github.com/unai-ttxu/libcalico-go/lib/upgrade/converters"
+	"github.com/unai-ttxu/libcalico-go/lib/upgrade/migrator/clients"
+	validatorv3 "github.com/unai-ttxu/libcalico-go/lib/validator/v3"
 )
 
 const (
