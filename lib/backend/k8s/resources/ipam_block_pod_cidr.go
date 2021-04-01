@@ -23,10 +23,10 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/kubernetes"
 
-	"github.com/projectcalico/libcalico-go/lib/backend/api"
-	"github.com/projectcalico/libcalico-go/lib/backend/model"
-	cerrors "github.com/projectcalico/libcalico-go/lib/errors"
-	cnet "github.com/projectcalico/libcalico-go/lib/net"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/api"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
+	cerrors "github.com/unai-ttxu/libcalico-go/lib/errors"
+	cnet "github.com/unai-ttxu/libcalico-go/lib/net"
 )
 
 func NewPodCIDRBlockAffinityClient(c *kubernetes.Clientset) K8sResourceClient {

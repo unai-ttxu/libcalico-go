@@ -17,7 +17,7 @@ package resources
 import (
 	"strings"
 
-	"github.com/projectcalico/libcalico-go/lib/errors"
+	"github.com/unai-ttxu/libcalico-go/lib/errors"
 
 	kerrors "k8s.io/apimachinery/pkg/api/errors"
 )

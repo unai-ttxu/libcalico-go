@@ -15,8 +15,8 @@
 package testutils
 
 import (
-	apiv3 "github.com/projectcalico/libcalico-go/lib/apis/v3"
-	"github.com/projectcalico/libcalico-go/lib/numorstring"
+	apiv3 "github.com/unai-ttxu/libcalico-go/lib/apis/v3"
+	"github.com/unai-ttxu/libcalico-go/lib/numorstring"
 	"github.com/sirupsen/logrus"
 )
 

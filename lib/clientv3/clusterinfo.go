@@ -18,10 +18,10 @@ import (
 	"context"
 	"errors"
 
-	apiv3 "github.com/projectcalico/libcalico-go/lib/apis/v3"
-	"github.com/projectcalico/libcalico-go/lib/options"
-	validator "github.com/projectcalico/libcalico-go/lib/validator/v3"
-	"github.com/projectcalico/libcalico-go/lib/watch"
+	apiv3 "github.com/unai-ttxu/libcalico-go/lib/apis/v3"
+	"github.com/unai-ttxu/libcalico-go/lib/options"
+	validator "github.com/unai-ttxu/libcalico-go/lib/validator/v3"
+	"github.com/unai-ttxu/libcalico-go/lib/watch"
 )
 
 // ClusterInformationInterface has methods to work with ClusterInformation resources.

@@ -17,7 +17,7 @@ package names
 import (
 	"strings"
 
-	"github.com/projectcalico/libcalico-go/lib/net"
+	"github.com/unai-ttxu/libcalico-go/lib/net"
 	"github.com/sirupsen/logrus"
 )
 

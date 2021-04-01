@@ -17,7 +17,7 @@ CALICO_BUILD     ?= calico/go-build:$(GO_BUILD_VER)
 PACKAGE_NAME     ?= projectcalico/libcalico-go
 LOCAL_USER_ID    ?= $(shell id -u $$USER)
 BINDIR           ?= bin
-LIBCALICO-GO_PKG  = github.com/projectcalico/libcalico-go
+LIBCALICO-GO_PKG  = github.com/unai-ttxu/libcalico-go
 TOP_SRC_DIR       = lib
 MY_UID           := $(shell id -u)
 
@@ -79,7 +79,7 @@ $(BINDIR)/deepcopy-gen: vendor
 			--v 1 --logtostderr \
 			--go-header-file "./docs/boilerplate.go.txt" \
 			--input-dirs "$(LIBCALICO-GO_PKG)/lib/upgrade/migrator/clients/v1/k8s/custom" \
-			--bounding-dirs "github.com/projectcalico/libcalico-go" \
+			--bounding-dirs "github.com/unai-ttxu/libcalico-go" \
 			--output-file-base zz_generated.deepcopy'
 
 ./lib/apis/v3/zz_generated.deepcopy.go: $(APIS_SRCS) $(BINDIR)/deepcopy-gen
@@ -88,7 +88,7 @@ $(BINDIR)/deepcopy-gen: vendor
 			--v 1 --logtostderr \
 			--go-header-file "./docs/boilerplate.go.txt" \
 			--input-dirs "$(LIBCALICO-GO_PKG)/lib/apis/v3" \
-			--bounding-dirs "github.com/projectcalico/libcalico-go" \
+			--bounding-dirs "github.com/unai-ttxu/libcalico-go" \
 			--output-file-base zz_generated.deepcopy'
 
 ###############################################################################

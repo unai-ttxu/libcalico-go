@@ -23,8 +23,8 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	gomegatypes "github.com/onsi/gomega/types"
-	"github.com/projectcalico/libcalico-go/lib/backend/api"
-	"github.com/projectcalico/libcalico-go/lib/backend/model"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/api"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
 )
 
 // Create a new SyncerTester.  This helper class implements the api.SyncerCallbacks

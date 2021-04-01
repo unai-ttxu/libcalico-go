@@ -40,7 +40,7 @@ echo '| All coverage |'
 echo '+==============+'
 echo
 go tool cover -func combined.coverprofile | \
-  sed 's=github.com/projectcalico/libcalico-go/==' | \
+  sed 's=github.com/unai-ttxu/libcalico-go/==' | \
   column -t
 
 echo
@@ -49,5 +49,5 @@ echo '| Missing coverage |'
 echo '+==================+'
 echo
 go tool cover -func combined.coverprofile | \
-  sed 's=github.com/projectcalico/libcalico-go/==' | grep -v '100.0%' | \
+  sed 's=github.com/unai-ttxu/libcalico-go/==' | grep -v '100.0%' | \
   column -t
