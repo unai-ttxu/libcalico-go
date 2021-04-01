@@ -17,7 +17,7 @@ package api
 import (
 	"fmt"
 
-	"github.com/projectcalico/unai-ttxu/lib/backend/model"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
 )
 
 // SyncStatus represents the overall state of the datastore.
