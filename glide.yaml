@@ -1,4 +1,4 @@
-package: github.com/projectcalico/libcalico-go
+package: github.com/unai-ttxu/libcalico-go
 import:
 # Pin to v3.3.8 since updates on master use a breaking version of grpc.
 # The version of golang.org/x/sys that other dependencies use does not have

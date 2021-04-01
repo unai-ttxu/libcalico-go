@@ -17,7 +17,7 @@ package clientv3
 import (
 	"context"
 
-	"github.com/projectcalico/libcalico-go/lib/ipam"
+	"github.com/unai-ttxu/libcalico-go/lib/ipam"
 )
 
 type Interface interface {

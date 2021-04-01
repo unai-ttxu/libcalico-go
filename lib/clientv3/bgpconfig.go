@@ -17,11 +17,11 @@ package clientv3
 import (
 	"context"
 
-	apiv3 "github.com/projectcalico/libcalico-go/lib/apis/v3"
-	cerrors "github.com/projectcalico/libcalico-go/lib/errors"
-	"github.com/projectcalico/libcalico-go/lib/options"
-	validator "github.com/projectcalico/libcalico-go/lib/validator/v3"
-	"github.com/projectcalico/libcalico-go/lib/watch"
+	apiv3 "github.com/unai-ttxu/libcalico-go/lib/apis/v3"
+	cerrors "github.com/unai-ttxu/libcalico-go/lib/errors"
+	"github.com/unai-ttxu/libcalico-go/lib/options"
+	validator "github.com/unai-ttxu/libcalico-go/lib/validator/v3"
+	"github.com/unai-ttxu/libcalico-go/lib/watch"
 )
 
 // BGPConfigurationInterface has methods to work with BGPConfiguration resources.

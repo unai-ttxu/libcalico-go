@@ -15,7 +15,7 @@
 package v3
 
 import (
-	"github.com/projectcalico/libcalico-go/lib/numorstring"
+	"github.com/unai-ttxu/libcalico-go/lib/numorstring"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 

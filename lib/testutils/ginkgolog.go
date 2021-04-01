@@ -17,7 +17,7 @@ import (
 	"github.com/onsi/ginkgo"
 	"github.com/sirupsen/logrus"
 
-	"github.com/projectcalico/libcalico-go/lib/logutils"
+	"github.com/unai-ttxu/libcalico-go/lib/logutils"
 )
 
 func HookLogrusForGinkgo() {

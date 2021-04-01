@@ -15,9 +15,9 @@
 package converter
 
 import (
-	api "github.com/projectcalico/libcalico-go/lib/apis/v1"
-	"github.com/projectcalico/libcalico-go/lib/apis/v1/unversioned"
-	"github.com/projectcalico/libcalico-go/lib/backend/model"
+	api "github.com/unai-ttxu/libcalico-go/lib/apis/v1"
+	"github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
 	log "github.com/sirupsen/logrus"
 )
 

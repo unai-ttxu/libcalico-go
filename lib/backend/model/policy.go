@@ -22,7 +22,7 @@ import (
 
 	"strings"
 
-	"github.com/projectcalico/libcalico-go/lib/errors"
+	"github.com/unai-ttxu/libcalico-go/lib/errors"
 	log "github.com/sirupsen/logrus"
 )
 

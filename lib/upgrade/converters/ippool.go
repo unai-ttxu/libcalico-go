@@ -18,12 +18,12 @@ import (
 	"fmt"
 	"strings"
 
-	apiv1 "github.com/projectcalico/libcalico-go/lib/apis/v1"
-	"github.com/projectcalico/libcalico-go/lib/apis/v1/unversioned"
-	apiv3 "github.com/projectcalico/libcalico-go/lib/apis/v3"
-	"github.com/projectcalico/libcalico-go/lib/backend/encap"
-	"github.com/projectcalico/libcalico-go/lib/backend/model"
-	"github.com/projectcalico/libcalico-go/lib/names"
+	apiv1 "github.com/unai-ttxu/libcalico-go/lib/apis/v1"
+	"github.com/unai-ttxu/libcalico-go/lib/apis/v1/unversioned"
+	apiv3 "github.com/unai-ttxu/libcalico-go/lib/apis/v3"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/encap"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
+	"github.com/unai-ttxu/libcalico-go/lib/names"
 )
 
 // IPPool implements the Converter interface.

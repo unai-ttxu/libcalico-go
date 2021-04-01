@@ -26,12 +26,12 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/projectcalico/libcalico-go/lib/apis/v3"
+	"github.com/unai-ttxu/libcalico-go/lib/apis/v3"
 
-	bapi "github.com/projectcalico/libcalico-go/lib/backend/api"
-	"github.com/projectcalico/libcalico-go/lib/backend/model"
-	cerrors "github.com/projectcalico/libcalico-go/lib/errors"
-	cnet "github.com/projectcalico/libcalico-go/lib/net"
+	bapi "github.com/unai-ttxu/libcalico-go/lib/backend/api"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
+	cerrors "github.com/unai-ttxu/libcalico-go/lib/errors"
+	cnet "github.com/unai-ttxu/libcalico-go/lib/net"
 )
 
 type blockReaderWriter struct {
