@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2018 Tigera, Inc. All rights reserved.
+// Copyright (c) 2016-2017 Tigera, Inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,11 +21,9 @@ import (
 
 	"net"
 
-	"strconv"
-
 	"github.com/coreos/etcd/client"
 	etcd "github.com/coreos/etcd/client"
-	"github.com/unai-ttxu/libcalico-go/lib/backend/api"
+	"github.com/unai-ttxu/libcalico-go/lib/backend/apiv1"
 	"github.com/unai-ttxu/libcalico-go/lib/backend/model"
 	"github.com/unai-ttxu/libcalico-go/lib/hwm"
 	log "github.com/sirupsen/logrus"
@@ -160,10 +158,6 @@ func (syn *etcdSyncer) Start() {
 	go syn.mergeUpdates(snapshotUpdateC, watcherUpdateC, snapshotRequestC)
 }
 
-func (sync *etcdSyncer) Stop() {
-	panic("Not implemented")
-}
-
 // readSnapshotsFromEtcd is a goroutine that, when requested, reads a new
 // snapshot from etcd and send it to the merge thread.  A snapshot request
 // includes the required etcd index for the snapshot; in case of a read from a
@@ -197,7 +191,7 @@ func (syn *etcdSyncer) readSnapshotsFromEtcd(
 				if syn.OneShot {
 					// One-shot mode is used to grab a snapshot and then
 					// stop.  We don't want to go into a retry loop.
-					log.Panic("Failed to read snapshot from etcd: ", err)
+					log.Fatal("Failed to read snapshot from etcd: ", err)
 				}
 				log.Warning("Error getting snapshot, retrying...", err)
 				time.Sleep(1 * time.Second)
@@ -396,7 +390,7 @@ func (syn *etcdSyncer) pollClusterID(interval time.Duration) {
 				log.WithFields(log.Fields{
 					"oldID": lastSeenClusterID,
 					"newID": resp.ClusterID,
-				}).Panic("etcd cluster ID changed; must exit.")
+				}).Fatal("etcd cluster ID changed; must exit.")
 			}
 		}
 		// Jitter by 10% of interval.
@@ -552,7 +546,7 @@ func (syn *etcdSyncer) sendUpdate(key string, value string, revision uint64, upd
 			KVPair: model.KVPair{
 				Key:      parsedKey,
 				Value:    parsedValue,
-				Revision: strconv.FormatUint(revision, 10),
+				Revision: revision,
 			},
 			UpdateType: updateType,
 		},
@@ -576,7 +570,7 @@ func (syn *etcdSyncer) sendDeletions(deletedKeys []string, revision uint64) {
 			KVPair: model.KVPair{
 				Key:      parsedKey,
 				Value:    nil,
-				Revision: strconv.FormatUint(revision, 10),
+				Revision: revision,
 			},
 			UpdateType: api.UpdateTypeKVDeleted,
 		})
